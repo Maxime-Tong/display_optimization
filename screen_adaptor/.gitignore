@@ -1,0 +1,19 @@
+# Large binary files
+*.png
+*.pt
+*.pth
+*.log
+
+# Large directories
+datasets/
+models/
+output/
+outputs/
+outputs-ori/
+clusters/luts/
+evaluation_logs/
+results/
+
+# Python
+__pycache__/
+.vscode/

@@ -1,0 +1,77 @@
+# ── Python ──────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+*.egg
+
+# ── Virtual environments ────────────────────────────────────────────────
+.venv/
+venv/
+env/
+ENV/
+
+# ── IDE / Editor ────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ── Logs ────────────────────────────────────────────────────────────────
+*.log
+odak.log
+logs/
+
+# ── Screen adaptor: large data / generated outputs ──────────────────────
+screen_adaptor/datasets/
+screen_adaptor/models/
+screen_adaptor/results/
+screen_adaptor/output/
+screen_adaptor/outputs/
+screen_adaptor/outputs-ori/
+screen_adaptor/evaluation_logs/
+screen_adaptor/clusters/luts/
+
+# ── FPGA bitstreams & hardware handoff (regenerable, large) ─────────────
+*.bit
+*.hwh
+
+# ── VR power saver: model data / IO ─────────────────────────────────────
+vr-power-saver/io/
+
+# ── Checkpoints / model weights ─────────────────────────────────────────
+*.pt
+*.pth
+*.onnx
+
+# ── Large binary test assets (only keep source code) ────────────────────
+*.bmp
+*.pkl
+hvs_vr_encoding/host/color_optimizer/Images/
+hvs_vr_encoding/host/projection/images/
+hvs_vr_encoding/host/base_delta/test_data/
+hvs_vr_encoding/host/len_correction/images/
+hvs_vr_encoding/fpga/double_output_hls/images/
+hvs_vr_encoding/fpga/len_correction_hls/images/
+hvs_vr_encoding/fpga/rearrangement_hls/images/
+hvs_vr_encoding/fpga/tile_color_optimizer_hls/imgs/
+hvs_vr_encoding/doc_images/office.bmp
+hvs_vr_encoding/fpga/ip_repo/
+
+# ── Jupyter ─────────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+
+# ── OS ──────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Test / coverage ─────────────────────────────────────────────────────
+.coverage
+.pytest_cache/
+htmlcov/
+.tox/
+.nox/

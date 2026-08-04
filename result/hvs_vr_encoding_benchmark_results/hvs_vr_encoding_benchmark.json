@@ -1,0 +1,1094 @@
+{
+  "config": {
+    "method": "hvs_vr_encoding (ASPLOS 2024) with MODIFIED objective: per-pixel max delta reduction (each pixel -> boundary of its JND ellipsoid along the decreasing direction min_p) instead of tile-consistent col_plane",
+    "benchmark_metric": "screen (OLED) display power: saving = 1 - power(opt)/power(orig), power = sum(R*0.229 + G*0.243 + B*0.526)",
+    "tile_size": 4,
+    "h_fov": 110,
+    "max_ecc": 35,
+    "ecc_no_compress": 10,
+    "only_blue": false,
+    "power_weights_rgb": [
+      0.229,
+      0.243,
+      0.526
+    ],
+    "max_metam_side": 768,
+    "max_images_per_dataset": 10
+  },
+  "per_dataset": {
+    "cf": {
+      "summary": {
+        "dataset": "cf",
+        "total_images": 10,
+        "avg_saving_percent": 5.332389301796871,
+        "avg_psnr": 29.493683052284922,
+        "avg_ssim": 0.9593326628208161,
+        "avg_metametric": 8.062271899689221e-06,
+        "avg_bd_orig_percent": 35.65304561089973,
+        "avg_bd_opt_percent": 35.65021114377955
+      },
+      "per_image": [
+        {
+          "filename": "000001.png",
+          "saving": 0.05059896596736935,
+          "psnr": 29.732222172745143,
+          "ssim": 0.9633349776268005,
+          "metametric": 7.916019967524335e-06,
+          "bd_compression_orig": 0.35794149227487604,
+          "bd_compression_opt": 0.357851654079711,
+          "bd_improvement": -8.983819516505953e-05,
+          "time_sec": 1.25
+        },
+        {
+          "filename": "000002.png",
+          "saving": 0.05061259602512136,
+          "psnr": 29.73086497935885,
+          "ssim": 0.9633978009223938,
+          "metametric": 7.917781658761669e-06,
+          "bd_compression_orig": 0.35791554969445405,
+          "bd_compression_opt": 0.3578242702448211,
+          "bd_improvement": -9.127944963294166e-05,
+          "time_sec": 1.193
+        },
+        {
+          "filename": "000003.png",
+          "saving": 0.05061040081466295,
+          "psnr": 29.73264311198172,
+          "ssim": 0.9633705019950867,
+          "metametric": 7.919656127342023e-06,
+          "bd_compression_orig": 0.3578689491333257,
+          "bd_compression_opt": 0.35778007177447246,
+          "bd_improvement": -8.887735885321213e-05,
+          "time_sec": 1.126
+        },
+        {
+          "filename": "000004.png",
+          "saving": 0.050594244219356654,
+          "psnr": 29.73851929930226,
+          "ssim": 0.9633598923683167,
+          "metametric": 7.917563380033243e-06,
+          "bd_compression_orig": 0.35794005102040816,
+          "bd_compression_opt": 0.3578468498981513,
+          "bd_improvement": -9.32011222568585e-05,
+          "time_sec": 1.107
+        },
+        {
+          "filename": "000005.png",
+          "saving": 0.05056516336816197,
+          "psnr": 29.746583973677595,
+          "ssim": 0.9633026123046875,
+          "metametric": 7.911761713330634e-06,
+          "bd_compression_orig": 0.35796743485529803,
+          "bd_compression_opt": 0.3578675078788578,
+          "bd_improvement": -9.99269764402344e-05,
+          "time_sec": 1.077
+        },
+        {
+          "filename": "000006.png",
+          "saving": 0.05052263257342504,
+          "psnr": 29.759246620116503,
+          "ssim": 0.9633477330207825,
+          "metametric": 7.908125553512946e-06,
+          "bd_compression_orig": 0.35783916320765596,
+          "bd_compression_opt": 0.357850693243399,
+          "bd_improvement": 1.1530035743056999e-05,
+          "time_sec": 1.039
+        },
+        {
+          "filename": "000007.png",
+          "saving": 0.0505084772860489,
+          "psnr": 29.763972091484113,
+          "ssim": 0.9633502960205078,
+          "metametric": 7.9043056757655e-06,
+          "bd_compression_orig": 0.3578554974249587,
+          "bd_compression_opt": 0.35786510578807795,
+          "bd_improvement": 9.608363119251173e-06,
+          "time_sec": 1.032
+        },
+        {
+          "filename": "000008.png",
+          "saving": 0.05047718801703305,
+          "psnr": 29.7706422361321,
+          "ssim": 0.9633530974388123,
+          "metametric": 7.900511263869703e-06,
+          "bd_compression_orig": 0.3580106724893347,
+          "bd_compression_opt": 0.35803901716053654,
+          "bd_improvement": 2.834467120182982e-05,
+          "time_sec": 1.119
+        },
+        {
+          "filename": "000009.png",
+          "saving": 0.06452121320788806,
+          "psnr": 28.207061495367938,
+          "ssim": 0.9410114288330078,
+          "metametric": 8.869044904713519e-06,
+          "bd_compression_orig": 0.3520208189207886,
+          "bd_compression_opt": 0.3524853832776048,
+          "bd_improvement": 0.00046456435681618835,
+          "time_sec": 1.069
+        },
+        {
+          "filename": "000010.png",
+          "saving": 0.06422804870061971,
+          "psnr": 28.755074542682955,
+          "ssim": 0.9454982876777649,
+          "metametric": 8.457948752038646e-06,
+          "bd_compression_orig": 0.3499449320688728,
+          "bd_compression_opt": 0.3496105610323226,
+          "bd_improvement": -0.0003343710365502073,
+          "time_sec": 1.091
+        }
+      ]
+    },
+    "delta_force": {
+      "summary": {
+        "dataset": "delta_force",
+        "total_images": 10,
+        "avg_saving_percent": 4.685304045761527,
+        "avg_psnr": 32.986799494015294,
+        "avg_ssim": 0.9874843657016754,
+        "avg_metametric": 5.326622749635135e-06,
+        "avg_bd_orig_percent": 40.616320873342474,
+        "avg_bd_opt_percent": 41.01137117055327
+      },
+      "per_image": [
+        {
+          "filename": "000001.png",
+          "saving": 0.046857185244206345,
+          "psnr": 32.98808918630246,
+          "ssim": 0.9874176383018494,
+          "metametric": 5.330212843546178e-06,
+          "bd_compression_orig": 0.40568401348879746,
+          "bd_compression_opt": 0.4096432041609511,
+          "bd_improvement": 0.003959190672153667,
+          "time_sec": 0.904
+        },
+        {
+          "filename": "000002.png",
+          "saving": 0.04670014268825795,
+          "psnr": 33.005634996105925,
+          "ssim": 0.9876542687416077,
+          "metametric": 5.3158528316998854e-06,
+          "bd_compression_orig": 0.4055759887974394,
+          "bd_compression_opt": 0.4095140317786923,
+          "bd_improvement": 0.003938042981252887,
+          "time_sec": 1.019
+        },
+        {
+          "filename": "000003.png",
+          "saving": 0.0467400787688107,
+          "psnr": 33.00672551272015,
+          "ssim": 0.987476646900177,
+          "metametric": 5.313544988894137e-06,
+          "bd_compression_orig": 0.4061664094650206,
+          "bd_compression_opt": 0.410204475308642,
+          "bd_improvement": 0.00403806584362143,
+          "time_sec": 0.899
+        },
+        {
+          "filename": "000004.png",
+          "saving": 0.04681512374042285,
+          "psnr": 32.99449604049975,
+          "ssim": 0.9874637722969055,
+          "metametric": 5.322082415659679e-06,
+          "bd_compression_orig": 0.4065933641975309,
+          "bd_compression_opt": 0.4103890889346137,
+          "bd_improvement": 0.003795724737082784,
+          "time_sec": 0.904
+        },
+        {
+          "filename": "000005.png",
+          "saving": 0.04684583792054953,
+          "psnr": 32.981728478931274,
+          "ssim": 0.9875176548957825,
+          "metametric": 5.3241838031681255e-06,
+          "bd_compression_orig": 0.4066510916780979,
+          "bd_compression_opt": 0.41065543552812067,
+          "bd_improvement": 0.004004343850022796,
+          "time_sec": 0.97
+        },
+        {
+          "filename": "000006.png",
+          "saving": 0.046893294646752626,
+          "psnr": 32.97193397555718,
+          "ssim": 0.9875540733337402,
+          "metametric": 5.334672096068971e-06,
+          "bd_compression_orig": 0.40604866826703245,
+          "bd_compression_opt": 0.41008216163694555,
+          "bd_improvement": 0.004033493369913099,
+          "time_sec": 0.917
+        },
+        {
+          "filename": "000007.png",
+          "saving": 0.04690059187082585,
+          "psnr": 32.96931580751911,
+          "ssim": 0.9874274134635925,
+          "metametric": 5.331549800757784e-06,
+          "bd_compression_orig": 0.40632130201188843,
+          "bd_compression_opt": 0.41019818815729314,
+          "bd_improvement": 0.003876886145404712,
+          "time_sec": 1.002
+        },
+        {
+          "filename": "000008.png",
+          "saving": 0.046944677254008194,
+          "psnr": 32.972860503334694,
+          "ssim": 0.9873691201210022,
+          "metametric": 5.332842192729004e-06,
+          "bd_compression_orig": 0.4063567386831276,
+          "bd_compression_opt": 0.41036336877000457,
+          "bd_improvement": 0.004006630086876961,
+          "time_sec": 0.922
+        },
+        {
+          "filename": "000009.png",
+          "saving": 0.04694021287175976,
+          "psnr": 32.98360257904821,
+          "ssim": 0.9874697327613831,
+          "metametric": 5.3336802920966875e-06,
+          "bd_compression_orig": 0.4061275434385002,
+          "bd_compression_opt": 0.41011531207133056,
+          "bd_improvement": 0.003987768632830346,
+          "time_sec": 0.876
+        },
+        {
+          "filename": "000010.png",
+          "saving": 0.0468932595705589,
+          "psnr": 32.993607860134155,
+          "ssim": 0.9874933362007141,
+          "metametric": 5.327606231730897e-06,
+          "bd_compression_orig": 0.40610696730681295,
+          "bd_compression_opt": 0.40997185070873343,
+          "bd_improvement": 0.0038648834019204825,
+          "time_sec": 0.869
+        }
+      ]
+    },
+    "dfm300": {
+      "summary": {
+        "dataset": "dfm300",
+        "total_images": 10,
+        "avg_saving_percent": 4.5346731875630875,
+        "avg_psnr": 30.405371743714376,
+        "avg_ssim": 0.9868180334568024,
+        "avg_metametric": 6.82128861626552e-06,
+        "avg_bd_orig_percent": 43.422848079561035,
+        "avg_bd_opt_percent": 43.79048925468679
+      },
+      "per_image": [
+        {
+          "filename": "000001.png",
+          "saving": 0.04545795864229474,
+          "psnr": 30.394533720483704,
+          "ssim": 0.9866478443145752,
+          "metametric": 6.833082352386555e-06,
+          "bd_compression_orig": 0.4334566472336534,
+          "bd_compression_opt": 0.4391706675811614,
+          "bd_improvement": 0.005714020347508009,
+          "time_sec": 0.886
+        },
+        {
+          "filename": "000002.png",
+          "saving": 0.04544441593534698,
+          "psnr": 30.394118688344697,
+          "ssim": 0.9867265224456787,
+          "metametric": 6.8342164922796655e-06,
+          "bd_compression_orig": 0.43493484224965706,
+          "bd_compression_opt": 0.43808470507544583,
+          "bd_improvement": 0.003149862825788774,
+          "time_sec": 0.871
+        },
+        {
+          "filename": "000003.png",
+          "saving": 0.045405014619660955,
+          "psnr": 30.399214053405238,
+          "ssim": 0.9867053031921387,
+          "metametric": 6.827939159848029e-06,
+          "bd_compression_orig": 0.4349685642432556,
+          "bd_compression_opt": 0.4380835619570187,
+          "bd_improvement": 0.0031149977137631124,
+          "time_sec": 0.865
+        },
+        {
+          "filename": "000004.png",
+          "saving": 0.045379742370841414,
+          "psnr": 30.4013035604498,
+          "ssim": 0.9867901802062988,
+          "metametric": 6.82598511048127e-06,
+          "bd_compression_orig": 0.43474908550525837,
+          "bd_compression_opt": 0.4378898033836306,
+          "bd_improvement": 0.0031407178783722234,
+          "time_sec": 0.873
+        },
+        {
+          "filename": "000005.png",
+          "saving": 0.04534930041866181,
+          "psnr": 30.404218975133148,
+          "ssim": 0.9868537783622742,
+          "metametric": 6.819745067332406e-06,
+          "bd_compression_orig": 0.43460905349794243,
+          "bd_compression_opt": 0.4377772062185642,
+          "bd_improvement": 0.003168152720621764,
+          "time_sec": 0.881
+        },
+        {
+          "filename": "000006.png",
+          "saving": 0.045321684958673836,
+          "psnr": 30.408028699698534,
+          "ssim": 0.9868466854095459,
+          "metametric": 6.817023859184701e-06,
+          "bd_compression_orig": 0.4342261088248742,
+          "bd_compression_opt": 0.43735653863740287,
+          "bd_improvement": 0.0031304298125286456,
+          "time_sec": 0.924
+        },
+        {
+          "filename": "000007.png",
+          "saving": 0.04529576329619611,
+          "psnr": 30.410598200206202,
+          "ssim": 0.9868927597999573,
+          "metametric": 6.818542715336662e-06,
+          "bd_compression_orig": 0.4344330132601738,
+          "bd_compression_opt": 0.4376051668952904,
+          "bd_improvement": 0.0031721536351165813,
+          "time_sec": 0.88
+        },
+        {
+          "filename": "000008.png",
+          "saving": 0.04528221986321923,
+          "psnr": 30.412768944830177,
+          "ssim": 0.9868845343589783,
+          "metametric": 6.815210326749366e-06,
+          "bd_compression_orig": 0.43442043895747595,
+          "bd_compression_opt": 0.4376125971650663,
+          "bd_improvement": 0.0031921582075903343,
+          "time_sec": 0.897
+        },
+        {
+          "filename": "000009.png",
+          "saving": 0.04526919478972702,
+          "psnr": 30.414600706953436,
+          "ssim": 0.986903965473175,
+          "metametric": 6.809346814407036e-06,
+          "bd_compression_orig": 0.43458447645176035,
+          "bd_compression_opt": 0.43781149977137634,
+          "bd_improvement": 0.003227023319615996,
+          "time_sec": 0.863
+        },
+        {
+          "filename": "000010.png",
+          "saving": 0.04526202386168665,
+          "psnr": 30.414331887638824,
+          "ssim": 0.9869287610054016,
+          "metametric": 6.811794264649507e-06,
+          "bd_compression_orig": 0.4319025777320531,
+          "bd_compression_opt": 0.437657178783722,
+          "bd_improvement": 0.005754601051668917,
+          "time_sec": 0.896
+        }
+      ]
+    },
+    "genshin_impact": {
+      "summary": {
+        "dataset": "genshin_impact",
+        "total_images": 10,
+        "avg_saving_percent": 8.744321641703742,
+        "avg_psnr": 24.168246272430657,
+        "avg_ssim": 0.9314590692520142,
+        "avg_metametric": 1.1906466079381062e-05,
+        "avg_bd_orig_percent": 32.66626001001002,
+        "avg_bd_opt_percent": 33.28837705949193
+      },
+      "per_image": [
+        {
+          "filename": "000001.png",
+          "saving": 0.09544840088001127,
+          "psnr": 23.930167966665714,
+          "ssim": 0.927895724773407,
+          "metametric": 1.2503378457040526e-05,
+          "bd_compression_orig": 0.31308821490409333,
+          "bd_compression_opt": 0.3232081321186051,
+          "bd_improvement": 0.010119917214511776,
+          "time_sec": 0.602
+        },
+        {
+          "filename": "000002.png",
+          "saving": 0.09347270226502802,
+          "psnr": 23.98217478290512,
+          "ssim": 0.9279088973999023,
+          "metametric": 1.219713067257544e-05,
+          "bd_compression_orig": 0.330194848564781,
+          "bd_compression_opt": 0.34038578274220166,
+          "bd_improvement": 0.010190934177420674,
+          "time_sec": 0.604
+        },
+        {
+          "filename": "000003.png",
+          "saving": 0.09330022259741144,
+          "psnr": 23.865993732953758,
+          "ssim": 0.9268084168434143,
+          "metametric": 1.225580672326032e-05,
+          "bd_compression_orig": 0.35590383457782104,
+          "bd_compression_opt": 0.36402344067040016,
+          "bd_improvement": 0.008119606092579112,
+          "time_sec": 0.658
+        },
+        {
+          "filename": "000004.png",
+          "saving": 0.0898524380269512,
+          "psnr": 23.879053452906362,
+          "ssim": 0.924933135509491,
+          "metametric": 1.205594526254572e-05,
+          "bd_compression_orig": 0.3792185344127912,
+          "bd_compression_opt": 0.38512139673457246,
+          "bd_improvement": 0.005902862321781277,
+          "time_sec": 0.595
+        },
+        {
+          "filename": "000005.png",
+          "saving": 0.08445399124038055,
+          "psnr": 24.28048763770207,
+          "ssim": 0.933990478515625,
+          "metametric": 1.165944013337139e-05,
+          "bd_compression_orig": 0.33034026425073726,
+          "bd_compression_opt": 0.3357104993507021,
+          "bd_improvement": 0.005370235099964815,
+          "time_sec": 0.63
+        },
+        {
+          "filename": "000006.png",
+          "saving": 0.08335252668508542,
+          "psnr": 24.406076693615315,
+          "ssim": 0.9354907870292664,
+          "metametric": 1.1602721315284725e-05,
+          "bd_compression_orig": 0.3175386112463815,
+          "bd_compression_opt": 0.32265267801585373,
+          "bd_improvement": 0.005114066769472236,
+          "time_sec": 0.606
+        },
+        {
+          "filename": "000007.png",
+          "saving": 0.08364916400426947,
+          "psnr": 24.33613045807919,
+          "ssim": 0.9344461560249329,
+          "metametric": 1.172537486127112e-05,
+          "bd_compression_orig": 0.3138364293347401,
+          "bd_compression_opt": 0.31845253192381573,
+          "bd_improvement": 0.004616102589075632,
+          "time_sec": 0.636
+        },
+        {
+          "filename": "000008.png",
+          "saving": 0.08371860567420386,
+          "psnr": 24.311823148975435,
+          "ssim": 0.9345065951347351,
+          "metametric": 1.1715987966454122e-05,
+          "bd_compression_orig": 0.30612939797906014,
+          "bd_compression_opt": 0.31061783912290664,
+          "bd_improvement": 0.0044884411438465,
+          "time_sec": 0.61
+        },
+        {
+          "filename": "000009.png",
+          "saving": 0.08365562399676685,
+          "psnr": 24.330832289298296,
+          "ssim": 0.9346147179603577,
+          "metametric": 1.1722177077899687e-05,
+          "bd_compression_orig": 0.3048012116846577,
+          "bd_compression_opt": 0.30883226976976974,
+          "bd_improvement": 0.00403105808511206,
+          "time_sec": 0.608
+        },
+        {
+          "filename": "000010.png",
+          "saving": 0.08352848880026609,
+          "psnr": 24.359722561205327,
+          "ssim": 0.93399578332901,
+          "metametric": 1.1626698324107565e-05,
+          "bd_compression_orig": 0.3155746540459379,
+          "bd_compression_opt": 0.3198331355003652,
+          "bd_improvement": 0.00425848145442731,
+          "time_sec": 0.603
+        }
+      ]
+    },
+    "jkchess": {
+      "summary": {
+        "dataset": "jkchess",
+        "total_images": 10,
+        "avg_saving_percent": 4.769124070003816,
+        "avg_psnr": 29.47082526835835,
+        "avg_ssim": 0.9492155909538269,
+        "avg_metametric": 9.78225471044425e-06,
+        "avg_bd_orig_percent": 45.01134627579845,
+        "avg_bd_opt_percent": 45.59933486106307
+      },
+      "per_image": [
+        {
+          "filename": "000001.png",
+          "saving": 0.047692346960303666,
+          "psnr": 29.47163183663293,
+          "ssim": 0.9492284655570984,
+          "metametric": 9.779791071196087e-06,
+          "bd_compression_orig": 0.4505132667473769,
+          "bd_compression_opt": 0.4563431410699873,
+          "bd_improvement": 0.0058298743226103955,
+          "time_sec": 1.438
+        },
+        {
+          "filename": "000002.png",
+          "saving": 0.04769065852873211,
+          "psnr": 29.4649076856171,
+          "ssim": 0.9492113590240479,
+          "metametric": 9.793485332920682e-06,
+          "bd_compression_orig": 0.450097224624313,
+          "bd_compression_opt": 0.4560188588147124,
+          "bd_improvement": 0.005921634190399372,
+          "time_sec": 1.192
+        },
+        {
+          "filename": "000003.png",
+          "saving": 0.047686448157461925,
+          "psnr": 29.468774899239982,
+          "ssim": 0.9491782188415527,
+          "metametric": 9.78536900220206e-06,
+          "bd_compression_orig": 0.4499958563934048,
+          "bd_compression_opt": 0.4559117255659326,
+          "bd_improvement": 0.005915869172527843,
+          "time_sec": 1.078
+        },
+        {
+          "filename": "000004.png",
+          "saving": 0.04770044000692519,
+          "psnr": 29.467285323652995,
+          "ssim": 0.9492753148078918,
+          "metametric": 9.785851034394e-06,
+          "bd_compression_orig": 0.45007032120757906,
+          "bd_compression_opt": 0.45598378828932706,
+          "bd_improvement": 0.005913467081748003,
+          "time_sec": 1.07
+        },
+        {
+          "filename": "000005.png",
+          "saving": 0.047691724338892794,
+          "psnr": 29.469158310960054,
+          "ssim": 0.949192464351654,
+          "metametric": 9.785873771761544e-06,
+          "bd_compression_orig": 0.45009818546062497,
+          "bd_compression_opt": 0.4560006029247857,
+          "bd_improvement": 0.0059024174641607585,
+          "time_sec": 1.083
+        },
+        {
+          "filename": "000006.png",
+          "saving": 0.04768687457215626,
+          "psnr": 29.471342734654726,
+          "ssim": 0.9491081237792969,
+          "metametric": 9.781715561985038e-06,
+          "bd_compression_orig": 0.45011403925977167,
+          "bd_compression_opt": 0.4559669736538683,
+          "bd_improvement": 0.0058529343940966205,
+          "time_sec": 1.071
+        },
+        {
+          "filename": "000007.png",
+          "saving": 0.047685772044522956,
+          "psnr": 29.4728129848245,
+          "ssim": 0.9491320252418518,
+          "metametric": 9.775623766472563e-06,
+          "bd_compression_orig": 0.45002516190091857,
+          "bd_compression_opt": 0.4559025976209693,
+          "bd_improvement": 0.005877435720050728,
+          "time_sec": 1.163
+        },
+        {
+          "filename": "000008.png",
+          "saving": 0.04768110220854316,
+          "psnr": 29.47576975160584,
+          "ssim": 0.949219286441803,
+          "metametric": 9.773446436156519e-06,
+          "bd_compression_orig": 0.4500467807179369,
+          "bd_compression_opt": 0.45592469685614356,
+          "bd_improvement": 0.005877916138206651,
+          "time_sec": 1.039
+        },
+        {
+          "filename": "000009.png",
+          "saving": 0.04769404121161569,
+          "psnr": 29.474316140933524,
+          "ssim": 0.949299156665802,
+          "metametric": 9.776593287824653e-06,
+          "bd_compression_orig": 0.4501039504784965,
+          "bd_compression_opt": 0.455945835255006,
+          "bd_improvement": 0.005841884776509487,
+          "time_sec": 1.106
+        },
+        {
+          "filename": "000010.png",
+          "saving": 0.04770299897122787,
+          "psnr": 29.472253015461874,
+          "ssim": 0.9493114948272705,
+          "metametric": 9.784797839529347e-06,
+          "bd_compression_orig": 0.45006984078942314,
+          "bd_compression_opt": 0.4559352660555748,
+          "bd_improvement": 0.005865425266151636,
+          "time_sec": 1.039
+        }
+      ]
+    },
+    "miHoYo": {
+      "summary": {
+        "dataset": "miHoYo",
+        "total_images": 10,
+        "avg_saving_percent": 4.719434633005367,
+        "avg_psnr": 28.389327967813283,
+        "avg_ssim": 0.9599729001522064,
+        "avg_metametric": 8.808935763227056e-06,
+        "avg_bd_orig_percent": 56.678085005188514,
+        "avg_bd_opt_percent": 56.66696812905953
+      },
+      "per_image": [
+        {
+          "filename": "000001.png",
+          "saving": 0.04716807823791813,
+          "psnr": 28.388142004396066,
+          "ssim": 0.9600421786308289,
+          "metametric": 8.813604836177547e-06,
+          "bd_compression_orig": 0.5647980201967793,
+          "bd_compression_opt": 0.5650017174949076,
+          "bd_improvement": 0.0002036972981283025,
+          "time_sec": 1.083
+        },
+        {
+          "filename": "000002.png",
+          "saving": 0.04717247690535131,
+          "psnr": 28.38888730989367,
+          "ssim": 0.9601299166679382,
+          "metametric": 8.824710675980896e-06,
+          "bd_compression_orig": 0.5646125787885776,
+          "bd_compression_opt": 0.5647413308543756,
+          "bd_improvement": 0.00012875206579798792,
+          "time_sec": 1.092
+        },
+        {
+          "filename": "000003.png",
+          "saving": 0.047159140084445994,
+          "psnr": 28.387364370069047,
+          "ssim": 0.9602651596069336,
+          "metametric": 8.798506314633414e-06,
+          "bd_compression_orig": 0.5686384829355471,
+          "bd_compression_opt": 0.5685774698297398,
+          "bd_improvement": -6.101310580730601e-05,
+          "time_sec": 1.05
+        },
+        {
+          "filename": "000004.png",
+          "saving": 0.04718125758749525,
+          "psnr": 28.38767131222166,
+          "ssim": 0.9602593779563904,
+          "metametric": 8.81393498275429e-06,
+          "bd_compression_orig": 0.5674672234713094,
+          "bd_compression_opt": 0.5673836307121718,
+          "bd_improvement": -8.359275913760733e-05,
+          "time_sec": 1.048
+        },
+        {
+          "filename": "000005.png",
+          "saving": 0.04716214045251799,
+          "psnr": 28.391161808710383,
+          "ssim": 0.9596462845802307,
+          "metametric": 8.800810974207707e-06,
+          "bd_compression_orig": 0.5685251042507398,
+          "bd_compression_opt": 0.5683209265344555,
+          "bd_improvement": -0.0002041777162842262,
+          "time_sec": 1.099
+        },
+        {
+          "filename": "000006.png",
+          "saving": 0.0471941343146165,
+          "psnr": 28.388902200803,
+          "ssim": 0.9595046043395996,
+          "metametric": 8.812644409772474e-06,
+          "bd_compression_orig": 0.5655839842999346,
+          "bd_compression_opt": 0.565397582055421,
+          "bd_improvement": -0.00018640224451360599,
+          "time_sec": 1.04
+        },
+        {
+          "filename": "000007.png",
+          "saving": 0.04720866977350824,
+          "psnr": 28.387029106244725,
+          "ssim": 0.9598364233970642,
+          "metametric": 8.804430763120763e-06,
+          "bd_compression_orig": 0.566551546466044,
+          "bd_compression_opt": 0.566293081498136,
+          "bd_improvement": -0.0002584649679080453,
+          "time_sec": 1.047
+        },
+        {
+          "filename": "000008.png",
+          "saving": 0.04721259381330656,
+          "psnr": 28.39345620551854,
+          "ssim": 0.9598827362060547,
+          "metametric": 8.812358828436118e-06,
+          "bd_compression_orig": 0.5671780117414198,
+          "bd_compression_opt": 0.5669613431530804,
+          "bd_improvement": -0.00021666858833935265,
+          "time_sec": 1.052
+        },
+        {
+          "filename": "000009.png",
+          "saving": 0.047228911777014715,
+          "psnr": 28.391946626167975,
+          "ssim": 0.960009753704071,
+          "metametric": 8.799714123597369e-06,
+          "bd_compression_orig": 0.5672889883354472,
+          "bd_compression_opt": 0.5670852910373189,
+          "bd_improvement": -0.0002036972981283025,
+          "time_sec": 1.043
+        },
+        {
+          "filename": "000010.png",
+          "saving": 0.04725606035436203,
+          "psnr": 28.38871873410778,
+          "ssim": 0.9601525664329529,
+          "metametric": 8.808641723589972e-06,
+          "bd_compression_orig": 0.5671645600330528,
+          "bd_compression_opt": 0.5669344397363465,
+          "bd_improvement": -0.0002301202967063265,
+          "time_sec": 1.07
+        }
+      ]
+    },
+    "nrc": {
+      "summary": {
+        "dataset": "nrc",
+        "total_images": 10,
+        "avg_saving_percent": 8.210799365574962,
+        "avg_psnr": 23.550312751109395,
+        "avg_ssim": 0.9326320588588715,
+        "avg_metametric": 1.3970735471957596e-05,
+        "avg_bd_orig_percent": 49.2479041757946,
+        "avg_bd_opt_percent": 48.685411382066945
+      },
+      "per_image": [
+        {
+          "filename": "000001.png",
+          "saving": 0.08213575378953708,
+          "psnr": 23.546826151093686,
+          "ssim": 0.9327409267425537,
+          "metametric": 1.3970196050649974e-05,
+          "bd_compression_orig": 0.49230388129828206,
+          "bd_compression_opt": 0.48665656587493755,
+          "bd_improvement": -0.005647315423344512,
+          "time_sec": 1.148
+        },
+        {
+          "filename": "000002.png",
+          "saving": 0.08210884598367818,
+          "psnr": 23.54998182802728,
+          "ssim": 0.9325780868530273,
+          "metametric": 1.3963443961984012e-05,
+          "bd_compression_orig": 0.49236153147699757,
+          "bd_compression_opt": 0.48674736490641457,
+          "bd_improvement": -0.005614166570583001,
+          "time_sec": 1.178
+        },
+        {
+          "filename": "000003.png",
+          "saving": 0.08213316735414355,
+          "psnr": 23.547476806690774,
+          "ssim": 0.9326179623603821,
+          "metametric": 1.3970936379337218e-05,
+          "bd_compression_orig": 0.4923216567700527,
+          "bd_compression_opt": 0.48670845103578153,
+          "bd_improvement": -0.005613205734271154,
+          "time_sec": 1.07
+        },
+        {
+          "filename": "000004.png",
+          "saving": 0.08212084715004775,
+          "psnr": 23.548739517453193,
+          "ssim": 0.9327725768089294,
+          "metametric": 1.397761661792174e-05,
+          "bd_compression_orig": 0.4923793069487682,
+          "bd_compression_opt": 0.4867584145240017,
+          "bd_improvement": -0.005620892424766488,
+          "time_sec": 1.069
+        },
+        {
+          "filename": "000005.png",
+          "saving": 0.08209945516728301,
+          "psnr": 23.550802061327502,
+          "ssim": 0.9326818585395813,
+          "metametric": 1.3971824046166148e-05,
+          "bd_compression_orig": 0.4924773122525846,
+          "bd_compression_opt": 0.48681654512087325,
+          "bd_improvement": -0.005660767131711375,
+          "time_sec": 1.037
+        },
+        {
+          "filename": "000006.png",
+          "saving": 0.08209897639198971,
+          "psnr": 23.550824551691655,
+          "ssim": 0.9327276349067688,
+          "metametric": 1.397062987962272e-05,
+          "bd_compression_orig": 0.4925618658480341,
+          "bd_compression_opt": 0.4869601901495061,
+          "bd_improvement": -0.005601675698527986,
+          "time_sec": 1.045
+        },
+        {
+          "filename": "000007.png",
+          "saving": 0.08210398013176645,
+          "psnr": 23.550977437064486,
+          "ssim": 0.9325886368751526,
+          "metametric": 1.3975761248730123e-05,
+          "bd_compression_orig": 0.4925416882854837,
+          "bd_compression_opt": 0.48690590289788227,
+          "bd_improvement": -0.005635785387601455,
+          "time_sec": 1.222
+        },
+        {
+          "filename": "000008.png",
+          "saving": 0.08209748325816435,
+          "psnr": 23.551584900017648,
+          "ssim": 0.9325659871101379,
+          "metametric": 1.3972859051136766e-05,
+          "bd_compression_orig": 0.4925320799223645,
+          "bd_compression_opt": 0.4869241587878089,
+          "bd_improvement": -0.005607921134555549,
+          "time_sec": 1.089
+        },
+        {
+          "filename": "000009.png",
+          "saving": 0.08208483261852428,
+          "psnr": 23.553500816367396,
+          "ssim": 0.9325129985809326,
+          "metametric": 1.3964804566057865e-05,
+          "bd_compression_orig": 0.4926425760982359,
+          "bd_compression_opt": 0.4870159186555978,
+          "bd_improvement": -0.005626657442638128,
+          "time_sec": 1.065
+        },
+        {
+          "filename": "000010.png",
+          "saving": 0.08209659471236186,
+          "psnr": 23.552413441360333,
+          "ssim": 0.9325339198112488,
+          "metametric": 1.3969282917969394e-05,
+          "bd_compression_orig": 0.4926685186786579,
+          "bd_compression_opt": 0.4870476262538914,
+          "bd_improvement": -0.005620892424766488,
+          "time_sec": 1.096
+        }
+      ]
+    },
+    "sgame0": {
+      "summary": {
+        "dataset": "sgame0",
+        "total_images": 10,
+        "avg_saving_percent": 4.737994965276512,
+        "avg_psnr": 31.745925552973404,
+        "avg_ssim": 0.9818400979042053,
+        "avg_metametric": 6.968202251300682e-06,
+        "avg_bd_orig_percent": 42.60320703140013,
+        "avg_bd_opt_percent": 42.99535795956801
+      },
+      "per_image": [
+        {
+          "filename": "000001.png",
+          "saving": 0.04749814133871322,
+          "psnr": 31.867657843790948,
+          "ssim": 0.9823866486549377,
+          "metametric": 6.941049832676072e-06,
+          "bd_compression_orig": 0.4274296547715132,
+          "bd_compression_opt": 0.4314497939006111,
+          "bd_improvement": 0.004020139129097933,
+          "time_sec": 1.055
+        },
+        {
+          "filename": "000002.png",
+          "saving": 0.047446482861972505,
+          "psnr": 31.705175876053232,
+          "ssim": 0.9817127585411072,
+          "metametric": 7.021654255368048e-06,
+          "bd_compression_orig": 0.4253864363542027,
+          "bd_compression_opt": 0.4292999226526769,
+          "bd_improvement": 0.003913486298474211,
+          "time_sec": 1.066
+        },
+        {
+          "filename": "000003.png",
+          "saving": 0.04743144651202591,
+          "psnr": 31.713498858644403,
+          "ssim": 0.9817259907722473,
+          "metametric": 6.999822744546691e-06,
+          "bd_compression_orig": 0.42556467149006494,
+          "bd_compression_opt": 0.42949881576924553,
+          "bd_improvement": 0.003934144279180596,
+          "time_sec": 1.087
+        },
+        {
+          "filename": "000004.png",
+          "saving": 0.04743210167366296,
+          "psnr": 31.715977951028698,
+          "ssim": 0.9816567301750183,
+          "metametric": 6.982252671150491e-06,
+          "bd_compression_orig": 0.4256304887774319,
+          "bd_compression_opt": 0.42957039807448405,
+          "bd_improvement": 0.003939909297052124,
+          "time_sec": 1.052
+        },
+        {
+          "filename": "000005.png",
+          "saving": 0.04741628868707681,
+          "psnr": 31.71684257916764,
+          "ssim": 0.9816988110542297,
+          "metametric": 6.991707323322771e-06,
+          "bd_compression_orig": 0.4257400241169914,
+          "bd_compression_opt": 0.42967176630539217,
+          "bd_improvement": 0.003931742188400755,
+          "time_sec": 1.11
+        },
+        {
+          "filename": "000006.png",
+          "saving": 0.04739356461588762,
+          "psnr": 31.72558904124606,
+          "ssim": 0.9817182421684265,
+          "metametric": 6.982663308008341e-06,
+          "bd_compression_orig": 0.42570687526423,
+          "bd_compression_opt": 0.42961603779930047,
+          "bd_improvement": 0.003909162535070454,
+          "time_sec": 1.088
+        },
+        {
+          "filename": "000007.png",
+          "saving": 0.04737102519176484,
+          "psnr": 31.735664977209442,
+          "ssim": 0.9817782044410706,
+          "metametric": 6.956415290915174e-06,
+          "bd_compression_orig": 0.42586445241938586,
+          "bd_compression_opt": 0.42978082122679584,
+          "bd_improvement": 0.003916368807409976,
+          "time_sec": 1.108
+        },
+        {
+          "filename": "000008.png",
+          "saving": 0.04735159708556003,
+          "psnr": 31.735635501880534,
+          "ssim": 0.9817929863929749,
+          "metametric": 6.9672132667619735e-06,
+          "bd_compression_orig": 0.42610610275183525,
+          "bd_compression_opt": 0.4300224715592451,
+          "bd_improvement": 0.003916368807409865,
+          "time_sec": 1.126
+        },
+        {
+          "filename": "000009.png",
+          "saving": 0.04726215597856642,
+          "psnr": 31.764204696077165,
+          "ssim": 0.9818986058235168,
+          "metametric": 6.924661647644825e-06,
+          "bd_compression_orig": 0.42621611850955077,
+          "bd_compression_opt": 0.43010654473653864,
+          "bd_improvement": 0.0038904262269878753,
+          "time_sec": 1.111
+        },
+        {
+          "filename": "000010.png",
+          "saving": 0.047196692582420874,
+          "psnr": 31.779008204635858,
+          "ssim": 0.9820320010185242,
+          "metametric": 6.914582172612427e-06,
+          "bd_compression_orig": 0.4266758786848073,
+          "bd_compression_opt": 0.43051922393251085,
+          "bd_improvement": 0.003843345247703578,
+          "time_sec": 1.038
+        }
+      ]
+    }
+  },
+  "summary_table": [
+    {
+      "dataset": "cf",
+      "total_images": 10,
+      "avg_saving_percent": 5.332389301796871,
+      "avg_psnr": 29.493683052284922,
+      "avg_ssim": 0.9593326628208161,
+      "avg_metametric": 8.062271899689221e-06,
+      "avg_bd_orig_percent": 35.65304561089973,
+      "avg_bd_opt_percent": 35.65021114377955
+    },
+    {
+      "dataset": "delta_force",
+      "total_images": 10,
+      "avg_saving_percent": 4.685304045761527,
+      "avg_psnr": 32.986799494015294,
+      "avg_ssim": 0.9874843657016754,
+      "avg_metametric": 5.326622749635135e-06,
+      "avg_bd_orig_percent": 40.616320873342474,
+      "avg_bd_opt_percent": 41.01137117055327
+    },
+    {
+      "dataset": "dfm300",
+      "total_images": 10,
+      "avg_saving_percent": 4.5346731875630875,
+      "avg_psnr": 30.405371743714376,
+      "avg_ssim": 0.9868180334568024,
+      "avg_metametric": 6.82128861626552e-06,
+      "avg_bd_orig_percent": 43.422848079561035,
+      "avg_bd_opt_percent": 43.79048925468679
+    },
+    {
+      "dataset": "genshin_impact",
+      "total_images": 10,
+      "avg_saving_percent": 8.744321641703742,
+      "avg_psnr": 24.168246272430657,
+      "avg_ssim": 0.9314590692520142,
+      "avg_metametric": 1.1906466079381062e-05,
+      "avg_bd_orig_percent": 32.66626001001002,
+      "avg_bd_opt_percent": 33.28837705949193
+    },
+    {
+      "dataset": "jkchess",
+      "total_images": 10,
+      "avg_saving_percent": 4.769124070003816,
+      "avg_psnr": 29.47082526835835,
+      "avg_ssim": 0.9492155909538269,
+      "avg_metametric": 9.78225471044425e-06,
+      "avg_bd_orig_percent": 45.01134627579845,
+      "avg_bd_opt_percent": 45.59933486106307
+    },
+    {
+      "dataset": "miHoYo",
+      "total_images": 10,
+      "avg_saving_percent": 4.719434633005367,
+      "avg_psnr": 28.389327967813283,
+      "avg_ssim": 0.9599729001522064,
+      "avg_metametric": 8.808935763227056e-06,
+      "avg_bd_orig_percent": 56.678085005188514,
+      "avg_bd_opt_percent": 56.66696812905953
+    },
+    {
+      "dataset": "nrc",
+      "total_images": 10,
+      "avg_saving_percent": 8.210799365574962,
+      "avg_psnr": 23.550312751109395,
+      "avg_ssim": 0.9326320588588715,
+      "avg_metametric": 1.3970735471957596e-05,
+      "avg_bd_orig_percent": 49.2479041757946,
+      "avg_bd_opt_percent": 48.685411382066945
+    },
+    {
+      "dataset": "sgame0",
+      "total_images": 10,
+      "avg_saving_percent": 4.737994965276512,
+      "avg_psnr": 31.745925552973404,
+      "avg_ssim": 0.9818400979042053,
+      "avg_metametric": 6.968202251300682e-06,
+      "avg_bd_orig_percent": 42.60320703140013,
+      "avg_bd_opt_percent": 42.99535795956801
+    }
+  ]
+}

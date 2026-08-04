@@ -1,0 +1,241 @@
+{
+  "config": {
+    "model": "D:\\workspace\\master\\3DGS\\Vulkan\\display_project\\vr-power-saver\\io\\color_model\\model.pth",
+    "fov": 60,
+    "transition_width": 3,
+    "power_weights_rgb": [
+      0.229,
+      0.243,
+      0.526
+    ],
+    "max_images_per_dataset": 1
+  },
+  "per_dataset": {
+    "cf": {
+      "summary": {
+        "dataset": "cf",
+        "total_images": 1,
+        "avg_saving_percent": 9.125565053897978,
+        "avg_psnr": 24.417648876742906,
+        "avg_ssim": 0.9674016833305359,
+        "avg_metametric": 1.0348844625696074e-05
+      },
+      "per_image": [
+        {
+          "filename": "000001.png",
+          "saving": 0.09125565053897977,
+          "psnr": 24.417648876742906,
+          "ssim": 0.9674016833305359,
+          "metametric": 1.0348844625696074e-05,
+          "time_sec": 0.743
+        }
+      ]
+    },
+    "delta_force": {
+      "summary": {
+        "dataset": "delta_force",
+        "total_images": 1,
+        "avg_saving_percent": 7.168359609748187,
+        "avg_psnr": 29.131769964625466,
+        "avg_ssim": 0.9856481552124023,
+        "avg_metametric": 7.009844466665527e-06
+      },
+      "per_image": [
+        {
+          "filename": "000001.png",
+          "saving": 0.07168359609748187,
+          "psnr": 29.131769964625466,
+          "ssim": 0.9856481552124023,
+          "metametric": 7.009844466665527e-06,
+          "time_sec": 0.515
+        }
+      ]
+    },
+    "dfm300": {
+      "summary": {
+        "dataset": "dfm300",
+        "total_images": 1,
+        "avg_saving_percent": 7.212131020571244,
+        "avg_psnr": 25.00129918372695,
+        "avg_ssim": 0.9896926283836365,
+        "avg_metametric": 1.0160496458411217e-05
+      },
+      "per_image": [
+        {
+          "filename": "000001.png",
+          "saving": 0.07212131020571244,
+          "psnr": 25.00129918372695,
+          "ssim": 0.9896926283836365,
+          "metametric": 1.0160496458411217e-05,
+          "time_sec": 0.709
+        }
+      ]
+    },
+    "genshin_impact": {
+      "summary": {
+        "dataset": "genshin_impact",
+        "total_images": 1,
+        "avg_saving_percent": 11.95311530365074,
+        "avg_psnr": 21.796889863901022,
+        "avg_ssim": 0.9248122572898865,
+        "avg_metametric": 1.5751560567878187e-05
+      },
+      "per_image": [
+        {
+          "filename": "000001.png",
+          "saving": 0.11953115303650741,
+          "psnr": 21.796889863901022,
+          "ssim": 0.9248122572898865,
+          "metametric": 1.5751560567878187e-05,
+          "time_sec": 0.354
+        }
+      ]
+    },
+    "jkchess": {
+      "summary": {
+        "dataset": "jkchess",
+        "total_images": 1,
+        "avg_saving_percent": 12.058557714066453,
+        "avg_psnr": 24.457330489641386,
+        "avg_ssim": 0.9731901288032532,
+        "avg_metametric": 1.2398302715155296e-05
+      },
+      "per_image": [
+        {
+          "filename": "000001.png",
+          "saving": 0.12058557714066453,
+          "psnr": 24.457330489641386,
+          "ssim": 0.9731901288032532,
+          "metametric": 1.2398302715155296e-05,
+          "time_sec": 0.666
+        }
+      ]
+    },
+    "miHoYo": {
+      "summary": {
+        "dataset": "miHoYo",
+        "total_images": 1,
+        "avg_saving_percent": 8.658342506121674,
+        "avg_psnr": 23.375355375381993,
+        "avg_ssim": 0.9796266555786133,
+        "avg_metametric": 1.2876318578491919e-05
+      },
+      "per_image": [
+        {
+          "filename": "000001.png",
+          "saving": 0.08658342506121675,
+          "psnr": 23.375355375381993,
+          "ssim": 0.9796266555786133,
+          "metametric": 1.2876318578491919e-05,
+          "time_sec": 0.592
+        }
+      ]
+    },
+    "nrc": {
+      "summary": {
+        "dataset": "nrc",
+        "total_images": 1,
+        "avg_saving_percent": 9.190542055192608,
+        "avg_psnr": 21.08194736970839,
+        "avg_ssim": 0.9553959965705872,
+        "avg_metametric": 1.6902644347283058e-05
+      },
+      "per_image": [
+        {
+          "filename": "000001.png",
+          "saving": 0.09190542055192608,
+          "psnr": 21.08194736970839,
+          "ssim": 0.9553959965705872,
+          "metametric": 1.6902644347283058e-05,
+          "time_sec": 0.592
+        }
+      ]
+    },
+    "sgame0": {
+      "summary": {
+        "dataset": "sgame0",
+        "total_images": 1,
+        "avg_saving_percent": 7.3581902230588465,
+        "avg_psnr": 27.8412025192265,
+        "avg_ssim": 0.9780903458595276,
+        "avg_metametric": 7.588421340187779e-06
+      },
+      "per_image": [
+        {
+          "filename": "000001.png",
+          "saving": 0.07358190223058847,
+          "psnr": 27.8412025192265,
+          "ssim": 0.9780903458595276,
+          "metametric": 7.588421340187779e-06,
+          "time_sec": 0.622
+        }
+      ]
+    }
+  },
+  "summary_table": [
+    {
+      "dataset": "cf",
+      "total_images": 1,
+      "avg_saving_percent": 9.125565053897978,
+      "avg_psnr": 24.417648876742906,
+      "avg_ssim": 0.9674016833305359,
+      "avg_metametric": 1.0348844625696074e-05
+    },
+    {
+      "dataset": "delta_force",
+      "total_images": 1,
+      "avg_saving_percent": 7.168359609748187,
+      "avg_psnr": 29.131769964625466,
+      "avg_ssim": 0.9856481552124023,
+      "avg_metametric": 7.009844466665527e-06
+    },
+    {
+      "dataset": "dfm300",
+      "total_images": 1,
+      "avg_saving_percent": 7.212131020571244,
+      "avg_psnr": 25.00129918372695,
+      "avg_ssim": 0.9896926283836365,
+      "avg_metametric": 1.0160496458411217e-05
+    },
+    {
+      "dataset": "genshin_impact",
+      "total_images": 1,
+      "avg_saving_percent": 11.95311530365074,
+      "avg_psnr": 21.796889863901022,
+      "avg_ssim": 0.9248122572898865,
+      "avg_metametric": 1.5751560567878187e-05
+    },
+    {
+      "dataset": "jkchess",
+      "total_images": 1,
+      "avg_saving_percent": 12.058557714066453,
+      "avg_psnr": 24.457330489641386,
+      "avg_ssim": 0.9731901288032532,
+      "avg_metametric": 1.2398302715155296e-05
+    },
+    {
+      "dataset": "miHoYo",
+      "total_images": 1,
+      "avg_saving_percent": 8.658342506121674,
+      "avg_psnr": 23.375355375381993,
+      "avg_ssim": 0.9796266555786133,
+      "avg_metametric": 1.2876318578491919e-05
+    },
+    {
+      "dataset": "nrc",
+      "total_images": 1,
+      "avg_saving_percent": 9.190542055192608,
+      "avg_psnr": 21.08194736970839,
+      "avg_ssim": 0.9553959965705872,
+      "avg_metametric": 1.6902644347283058e-05
+    },
+    {
+      "dataset": "sgame0",
+      "total_images": 1,
+      "avg_saving_percent": 7.3581902230588465,
+      "avg_psnr": 27.8412025192265,
+      "avg_ssim": 0.9780903458595276,
+      "avg_metametric": 7.588421340187779e-06
+    }
+  ]
+}

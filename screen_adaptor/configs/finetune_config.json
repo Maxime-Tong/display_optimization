@@ -1,0 +1,20 @@
+{
+    "_comment": "Finetune hyper-parameters. Loads base checkpoint and fine-tunes on per-cluster images.",
+
+    "image_size": 256,
+    "batch_size": 1,
+    "steps": 300,
+    "lr": 1e-4,
+    "device": "cuda",
+    "hidden_dim": 32,
+    "depth": 2,
+
+    "power_weights": [0.22970384, 0.24373232, 0.5265638],
+
+    "alpha_power": 1.0,
+    "lambda_perceptual": 0.2,
+    "lambda_ssim": 0.2,
+
+    "lut_resolution": 16,
+    "log_interval": 10
+}
