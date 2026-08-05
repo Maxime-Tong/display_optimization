@@ -1,23 +1,14 @@
 #!/usr/bin/env python
 """
-Benchmark: Gradual Chromatic Adaptation (GCA) + GUD power-saving method applied
-to screen_adaptor's datasets, measured with screen display power + quality metrics.
+Benchmark: screen_adaptor LUT color transform, applied to screen_adaptor's
+datasets and measured with screen display power + quality metrics.
 
 This script:
-  1. Uses the gradual_adaptation package (implementation of gradual.md),
-     with BOTH improvements for higher power savings:
-       - adaptation-bounded trajectory  (perceived cast |A-a| <= 5 JND while
-         the illuminant itself drifts ~2.5x further than DELTA_T)
-       - combined GUD (gradual uniform dimming)
-  2. For each dataset, simulates the GRADUAL ramp by FRAME SKIPPING:
-     - Dataset image k of N is rendered at t_k = (k+0.5)/N * t_max
-       (a different wall-clock time across the 2-minute ramp)
-     - Per-image saving starts near 0% and RAMPS UP to its maximum across
-       the N images, directly validating the progressive power decline
-     - The dataset mean estimates the TIME-AVERAGED ramp saving
-  3. Computes Saving% = 1 - power(opt) / power(orig) plus PSNR, SSIM and
-     MetaM (odak MetamericLoss) for EVERY image on ITS OWN time-stamp state,
-     matching the baseline benchmark methodology per-image.
+  1. Loads the screen_adaptor LUT transformers:
+       - single  : base_lut.pt
+       - cluster : scene_manifest.json + per-cluster LUTs (dynamic switching)
+  2. For each dataset, applies the LUT (optionally foveated/temporal) to every image
+  3. Computes: Saving%, PSNR, SSIM, MetaM (metameric loss)
   4. Outputs per-dataset summary CSV + JSON + Markdown
 """
 
@@ -30,31 +21,21 @@ import os
 import sys
 import time
 from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
+import torch
 from PIL import Image
 from skimage.metrics import peak_signal_noise_ratio, structural_similarity
 
-# ── Add gradual_adaptation to path ─────────────────────────────────────
-_GA_ROOT = Path(__file__).resolve().parent / "gradual_adaptation"
-sys.path.insert(0, str(_GA_ROOT.parent))
-
-from gradual_adaptation import (  # noqa: E402
-    GradualAdaptationImageOptimizer,
-)
-from gradual_adaptation.constants import (  # noqa: E402
-    DEFAULT_TRAJECTORY,
-    DEFAULT_VELOCITY,
-    GUD_ENABLED,
-    GUD_TARGET,
-    POWER_WEIGHTS_RGB,
-    T_MAX,
-)
-
-# ── Add screen_adaptor for odak (MetamericLoss) ──────────────────────────
+# ── Add screen_adaptor src to path ────────────────────────────────────────
 _SA_ROOT = Path(__file__).resolve().parent / "screen_adaptor"
-sys.path.insert(0, str(_SA_ROOT))
+_SA_SRC = _SA_ROOT / "src"
+sys.path.insert(0, str(_SA_SRC))
+sys.path.insert(0, str(_SA_ROOT))  # for bundled odak (MetamericLoss)
+
+from screen_adaptor.model import LUTColorTransformer, load_lut_transformer  # noqa: E402
+from screen_adaptor.scene_matcher import SceneMatcher, load_scene_manifest  # noqa: E402
 
 from odak.learn.perception import MetamericLoss  # noqa: E402
 
@@ -71,6 +52,10 @@ DATASETS = [
     ("nrc",           _SA_ROOT / "datasets" / "nrc"),
     ("sgame0",        _SA_ROOT / "datasets" / "sgame0"),
 ]
+
+# screen_adaptor outputs
+BASE_LUT = _SA_ROOT / "outputs" / "base_lut.pt"
+SCENE_MANIFEST = _SA_ROOT / "outputs" / "scene_manifest.json"
 
 # OLED power weights used in screen_adaptor eval.ps1: 0.229 0.243 0.526 (R,G,B)
 POWER_WEIGHTS_RGB = (0.229, 0.243, 0.526)
@@ -92,7 +77,7 @@ _fov_hvs_loss = MetamericLoss(
 
 # ── Image loading helpers ─────────────────────────────────────────────────
 
-IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg", ".bmp", ".tiff", ".tif"}
+IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg", ".bmp", ".tiff", ".tif", ".webp"}
 
 
 def collect_images(directory: Path) -> List[Path]:
@@ -103,25 +88,102 @@ def collect_images(directory: Path) -> List[Path]:
     return paths
 
 
-# ── Optimizer construction (GCA + optional GUD) ──────────────────────────
+def resolve_lut_path(path: Optional[str]) -> Path:
+    """Resolve a manifest lut_path to an existing file (fallback to base LUT).
 
-def make_optimizer(
-    trajectory: str,
-    velocity: float,
-    gud_enabled: bool = GUD_ENABLED,
-    gud_target: float = GUD_TARGET,
-) -> GradualAdaptationImageOptimizer:
-    """Build a per-dataset GradualAdaptationImageOptimizer (GCA + GUD)."""
-    return GradualAdaptationImageOptimizer(
-        trajectory=trajectory,
-        velocity=velocity,
-        t_max=T_MAX,
-        gud_target=gud_target,
-        gud_enabled=gud_enabled,
-    )
+    Mirrors generate_video.py's _resolve_lut_path: the manifest may reference
+    absolute paths (e.g. .../screen_adaptor/clusters/...) that no longer exist,
+    so we search the known output directories for the file by name.
+    """
+    if not path:
+        return BASE_LUT
+    p = Path(path)
+    if p.is_absolute() and p.exists():
+        return p
+    candidates = [
+        _SA_ROOT / "outputs" / "luts" / p.name,
+        _SA_ROOT / "outputs" / p,
+        _SA_ROOT / "outputs" / "luts" / p,
+        _SA_ROOT / "clusters" / p.name,
+        p,
+    ]
+    for c in candidates:
+        if c.exists():
+            return c
+    print(f"  [warn] LUT not found for {path}, fallback to base_lut.pt")
+    return BASE_LUT
 
 
-# ── Metrics (matching screen_adaptor eval.py) ────────────────────────────
+# ── LUT pipeline construction ─────────────────────────────────────────────
+
+def build_transformers(
+    lut_mode: str,
+    foveated: float,
+    temporal: float,
+) -> Tuple[List[LUTColorTransformer], Optional[SceneMatcher]]:
+    """Build transformer(s) + optional SceneMatcher.
+
+    Returns:
+        (transformers, matcher_or_None)
+        - lut_mode=="single": one transformer, matcher=None
+        - lut_mode=="cluster": one transformer per prototype, matcher=SceneMatcher
+    """
+    if lut_mode == "single":
+        transformer = load_lut_transformer(
+            BASE_LUT, foveated=foveated, temporal=temporal,
+        )
+        return [transformer], None
+
+    # cluster 模式：从 scene_manifest 加载 prototypes + 每簇 LUT
+    if not SCENE_MANIFEST.exists():
+        raise FileNotFoundError(f"scene manifest not found: {SCENE_MANIFEST}")
+    prototypes, feat_mean, feat_std = load_scene_manifest(SCENE_MANIFEST)
+    transformers = []
+    for proto in prototypes:
+        lut = resolve_lut_path(proto.lut_path)
+        transformers.append(
+            load_lut_transformer(lut, foveated=foveated, temporal=temporal)
+        )
+    matcher = SceneMatcher(prototypes, feature_mean=feat_mean, feature_std=feat_std)
+    return transformers, matcher
+
+
+def apply_lut_image(
+    img_path: Path,
+    img: np.ndarray,
+    transformers: List[LUTColorTransformer],
+    matcher: Optional[SceneMatcher],
+) -> Tuple[np.ndarray, int, Optional[str], float]:
+    """Apply the selected LUT to a single image (full native resolution).
+
+    Args:
+        img_path: image path (used for scene matching)
+        img: float32 sRGB in [0, 1], shape (H, W, 3)
+        transformers: list of LUT transformers
+        matcher: SceneMatcher or None (single-LUT mode)
+
+    Returns:
+        (optimized, lut_index, prototype_name, match_distance)
+    """
+    rgb = torch.from_numpy(np.asarray(img, dtype=np.float32))
+
+    if matcher is None:
+        transformer = transformers[0]
+        lut_idx, proto_name, dist = 0, None, 0.0
+    else:
+        best_idx, proto, dist = matcher.match_paths([img_path])
+        transformer = transformers[best_idx]
+        lut_idx = best_idx
+        proto_name = proto.name
+
+    with torch.no_grad():
+        optimized = transformer.transform(rgb)
+    optimized_np = optimized.cpu().numpy()
+
+    return optimized_np, lut_idx, proto_name, float(dist)
+
+
+# ── Metrics (matching screen_adaptor eval.py / other benchmarks) ─────────
 
 def weighted_power_np(rgb: np.ndarray, weights: Tuple[float, float, float]) -> np.ndarray:
     """Compute per-pixel OLED weighted power: sum(rgb * weights)."""
@@ -165,8 +227,6 @@ def compute_metametric(
     Returns:
         metametric: scalar float
     """
-    import torch
-
     orig_r, opt_r = resize_for_metametric(original, optimized, max_side)
 
     # NCHW layout
@@ -188,7 +248,6 @@ def evaluate_image(
     (float32 [0, 1]).
 
     Returns dict with keys: saving, psnr, ssim, metametric
-    (MetaM computed per image, matching baseline methodology.)
     """
     # OLED display power saving
     orig_power = weighted_power_np(original, power_weights).sum()
@@ -218,40 +277,29 @@ def evaluate_image(
 
 def run_benchmark(
     max_images: int = 10,
-    output_dir: Path = Path("gradual_adaptation_benchmark_results"),
+    output_dir: Path = Path("screen_adaptor_benchmark_results"),
     max_metam_side: int = 768,
-    time_s: float = T_MAX,
-    trajectory: str = DEFAULT_TRAJECTORY,
-    velocity: float = DEFAULT_VELOCITY,
-    gud_enabled: bool = GUD_ENABLED,
-    gud_target: float = GUD_TARGET,
+    lut_mode: str = "cluster",
+    foveated: float = 1.0,
+    temporal: float = 0.0,
 ) -> None:
-    """
-    Run GCA (+ GUD) on all datasets; measure screen power + quality metrics.
-
-    Frame skipping: each of the N dataset images is rendered at a distinct
-    time t_k = (k+0.5)/N * time_s across the gradual ramp, so the per-image
-    power saving shows the progressive decline and the dataset mean estimates
-    the time-averaged ramp saving.
-
-    Saving%, PSNR, SSIM and MetaM are computed PER IMAGE on its own
-    time-stamp state (t_img); no shared worst-case state is used, so the
-    comparison with the other baselines is fair.
-    """
+    """Run screen_adaptor LUT on all datasets; measure screen power + quality."""
     output_dir.mkdir(parents=True, exist_ok=True)
+
+    transformers, matcher = build_transformers(lut_mode, foveated, temporal)
+    n_luts = len(transformers)
+
+    print(f"\n{'='*70}")
+    print(f"  screen_adaptor benchmark")
+    print(f"  lut-mode : {lut_mode} ({n_luts} LUT{'s' if n_luts > 1 else ''})")
+    print(f"  foveated : {foveated}")
+    print(f"  temporal : {temporal}")
+    if matcher is not None:
+        print(f"  scene matching enabled (dynamic LUT switching)")
+    print(f"{'='*70}")
 
     all_summaries: List[Dict[str, Any]] = []
     per_dataset_results: Dict[str, Dict[str, Any]] = {}
-
-    print(f"Gradual Chromatic Adaptation configuration:")
-    print(f"  trajectory   : {trajectory}")
-    print(f"  velocity     : {velocity} u'v'/s (adaptation-bounded)")
-    print(f"  time (t)     : {time_s} s   (t_max = {T_MAX} s)")
-    print(f"  GUD          : enabled={gud_enabled}, target={gud_target}")
-    print(f"  weights RGB  : {POWER_WEIGHTS_RGB}")
-    print(f"  frame skip   : image k rendered at t=(k+0.5)/N*{time_s}s; "
-          f"per-image saving ramps 0 -> max")
-    print()
 
     for dataset_name, dataset_dir in DATASETS:
         if not dataset_dir.exists():
@@ -269,16 +317,7 @@ def run_benchmark(
             continue
 
         selected = images[:max_images]
-        n_imgs = len(selected)
         print(f"  Found {len(images)} images, processing {len(selected)}...")
-
-        # One optimizer per dataset; its GCA clock stays monotonic.
-        optimizer = make_optimizer(
-            trajectory=trajectory,
-            velocity=velocity,
-            gud_enabled=gud_enabled,
-            gud_target=gud_target,
-        )
 
         results: List[Dict[str, Any]] = []
         savings: List[float] = []
@@ -288,54 +327,43 @@ def run_benchmark(
 
         for idx, img_path in enumerate(selected):
             try:
-                # Load image (float sRGB in [0, 1])
+                # Load image (float sRGB in [0, 1]); full native resolution
                 img = np.asarray(Image.open(img_path).convert("RGB"), dtype=np.float32) / 255.0
 
-                # Use the full native-resolution image (no square crop)
-                original = img
-
-                # ── Temporal FRAME-SKIPPED power evaluation ─────────────
-                # GCA+GUD is a GRADUAL technique: the power saving starts at
-                # ~0% at t=0 and grows toward its maximum at t=time_s.
-                # Rendering every real frame (e.g. 90 fps * 120 s) is
-                # prohibitive, so we FRAME-SKIP: dataset image k (of N) is
-                # rendered at the midpoint of its time window, t_k =
-                # (k + 0.5)/N * time_s. This mimics a video whose sampled
-                # frames are shown at progressively later times: per-image
-                # saving ramps up across the N images, and the dataset mean
-                # estimates the time-averaged ramp saving.
+                # Apply LUT (single or scene-matched cluster)
                 t0 = time.perf_counter()
-
-                t_img = float(((idx + 0.5) / n_imgs) * time_s)
-                adapted_t = optimizer.process_frame(original, t=t_img)
-
-                # All metrics (Saving%, PSNR, SSIM, MetaM) are computed on THIS
-                # FRAME'S OWN TIME state (t_img), matching the baseline
-                # methodology where every image is measured independently.
-                # No shared worst-case final state is used, so the comparison
-                # with the other baselines is fair.
-                metrics = evaluate_image(
-                    original, adapted_t, POWER_WEIGHTS_RGB,
-                    max_metam_side=max_metam_side,
+                optimized, lut_idx, proto_name, match_dist = apply_lut_image(
+                    img_path, img, transformers, matcher,
                 )
                 elapsed = time.perf_counter() - t0
+
+                # Metrics
+                metrics = evaluate_image(
+                    img, optimized, POWER_WEIGHTS_RGB,
+                    max_metam_side=max_metam_side,
+                )
 
                 results.append({
                     "filename": img_path.name,
                     **metrics,
-                    "saving_at_time": metrics["saving"],
-                    "time_stamp_sec": round(t_img, 3),
+                    "lut_index": lut_idx,
                     "time_sec": round(elapsed, 3),
                 })
+                if matcher is not None:
+                    results[-1]["matched_prototype"] = proto_name
+                    results[-1]["match_distance"] = round(match_dist, 4)
+
                 savings.append(metrics["saving"])
                 psnrs.append(metrics["psnr"])
                 ssims.append(metrics["ssim"])
                 metametrics.append(metrics["metametric"])
 
+                extra = f" [LUT:{lut_idx}]"
+                if matcher is not None and proto_name is not None:
+                    extra += f" ({proto_name}, d={match_dist:.3f})"
                 print(
-                    f"  [{idx+1:4d}/{n_imgs}] {img_path.name} "
-                    f"(t={t_img:.1f}s): "
-                    f"power_saving={metrics['saving']*100:.2f}%, "
+                    f"  [{idx+1:4d}/{len(selected)}] {img_path.name}{extra}: "
+                    f"saving={metrics['saving']*100:.2f}%, "
                     f"PSNR={metrics['psnr']:.2f}dB, "
                     f"SSIM={metrics['ssim']:.4f}, "
                     f"MetaM={metrics['metametric']:.6f} "
@@ -343,7 +371,7 @@ def run_benchmark(
                 )
 
             except Exception as e:
-                print(f"  [{idx+1:4d}/{n_imgs}] {img_path.name}: ERROR - {e}")
+                print(f"  [{idx+1:4d}/{len(selected)}] {img_path.name}: ERROR - {e}")
 
         # Summary for this dataset
         if savings:
@@ -378,40 +406,26 @@ def run_benchmark(
     # ── Save Results ──────────────────────────────────────────────────────
 
     # JSON (full details)
-    json_path = output_dir / "gradual_adaptation_benchmark.json"
+    json_path = output_dir / "screen_adaptor_benchmark.json"
     with open(json_path, "w", encoding="utf-8") as f:
         json.dump({
             "config": {
-                "method": ("Gradual Chromatic Adaptation (GCA): slow white-point "
-                           "shift along a yellow-green u'v' trajectory from D65 "
-                           "(Bradford CAT), exploiting slow human chromatic "
-                           "adaptation to be perceptually invisible. Plus "
-                           "GUD (gradual uniform dimming). Velocity is "
-                           "adaptation-bounded: the perceived cast |A-a| stays "
-                           "within 5 JND while the absolute illuminant drift "
-                           "exceeds DELTA_T."),
+                "method": ("screen_adaptor: EllipsoidRadiusNet-derived 3D LUT "
+                           "color transform; cluster mode dynamically switches "
+                           "LUTs via DKL scene matching"),
+                "lut_mode": lut_mode,
+                "n_luts": n_luts,
+                "foveated": foveated,
+                "temporal": temporal,
+                "scene_matching": matcher is not None,
+                "base_lut": str(BASE_LUT),
+                "scene_manifest": str(SCENE_MANIFEST),
                 "benchmark_metric": "screen (OLED) display power: "
                                     "saving = 1 - power(opt)/power(orig), "
                                     "power = sum(R*0.229 + G*0.243 + B*0.526)",
-                "trajectory": trajectory,
-                "velocity_upvp_per_sec": velocity,
-                "time_sec": time_s,
-                "t_max_sec": T_MAX,
-                "gud_enabled": bool(gud_enabled),
-                "gud_target": float(gud_target),
                 "power_weights_rgb": list(POWER_WEIGHTS_RGB),
                 "max_metam_side": max_metam_side,
                 "max_images_per_dataset": max_images,
-                "temporal_averaging": {
-                    "method": ("frame skipping: dataset image k of N rendered "
-                               "at t_k = (k+0.5)/N * time_s across the gradual "
-                               "ramp; per-image saving ramps 0 -> max, dataset "
-                               "mean estimates the time-averaged ramp saving"),
-                    "n_time_samples": int(max_images),
-                    "note": ("All metrics (Saving%, PSNR, SSIM, MetaM) computed "
-                             "per image on its own time-stamp state (no shared "
-                             "worst-case state); dataset avg = ramp average"),
-                },
             },
             "per_dataset": per_dataset_results,
             "summary_table": all_summaries,
@@ -419,7 +433,7 @@ def run_benchmark(
     print(f"\nFull results saved to: {json_path}")
 
     # CSV summary
-    csv_path = output_dir / "gradual_adaptation_benchmark_summary.csv"
+    csv_path = output_dir / "screen_adaptor_benchmark_summary.csv"
     with open(csv_path, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=[
             "dataset", "total_images", "avg_saving_percent",
@@ -430,25 +444,21 @@ def run_benchmark(
     print(f"CSV summary saved to: {csv_path}")
 
     # Markdown summary
-    md_path = output_dir / "gradual_adaptation_benchmark_summary.md"
+    md_path = output_dir / "screen_adaptor_benchmark_summary.md"
     with open(md_path, "w", encoding="utf-8") as f:
-        f.write("# Gradual Chromatic Adaptation (GCA) + GUD Benchmark Results\n\n")
-        f.write("- Method: slow white-point shift along a yellow-green u'v' "
-                "trajectory from D65 (Bradford CAT), perceptually invisible via "
-                "human chromatic adaptation, + GUD uniform dimming\n")
-        f.write("- Trajectory: **%s**, velocity: **%s u'v'/s** (adaptation-bounded, "
-                "perceived cast <= 5 JND), time: **%s s** (t_max = %s s)\n"
-                % (trajectory, velocity, time_s, T_MAX))
-        f.write("- GUD: enabled=%s, target=%.2f\n" % (gud_enabled, gud_target))
+        f.write("# screen_adaptor Benchmark Results\n\n")
+        f.write("- Method: EllipsoidRadiusNet-derived 3D LUT color transform\n")
+        f.write("- LUT mode: **%s** (%d LUT%s)\n" % (
+            lut_mode, n_luts, "s" if n_luts > 1 else ""))
+        f.write("- Foveated: %s, Temporal: %s\n" % (foveated, temporal))
+        if matcher is not None:
+            f.write("- Scene matching enabled (dynamic LUT switching via DKL "
+                    "features)\n")
         f.write("- Benchmark metric: **screen (OLED) display power** saving with "
                 "weights (R,G,B) = %s\n" % (POWER_WEIGHTS_RGB,))
-        f.write("- MetaM computed with max side %d px (odak MetamericLoss), "
-                "per image on its own time-stamp state\n" % max_metam_side)
-        f.write("- Images per dataset: up to %d\n" % max_images)
-        f.write("- Temporal frame-skipped power: %d images sampled across "
-                "[0, %s s]; image k rendered at t=(k+0.5)/N*%s s, per-image "
-                "saving ramps 0 -> max, dataset mean = ramp average\n\n"
-                % (max_images, time_s, time_s))
+        f.write("- MetaM computed with max side %d px (odak MetamericLoss)\n"
+                % max_metam_side)
+        f.write("- Images per dataset: up to %d\n\n" % max_images)
         f.write("| Dataset | Images | Power Saving (%) | PSNR (dB) | SSIM "
                 "| MetaM |\n")
         f.write("|---------|--------|:----------------:|:---------:|:-----:"
@@ -465,7 +475,7 @@ def run_benchmark(
 
     # ── Final console summary ─────────────────────────────────────────────
     print(f"\n{'='*80}")
-    print(f"  FINAL BENCHMARK: Gradual Chromatic Adaptation (+GUD) on All Datasets")
+    print(f"  FINAL BENCHMARK: screen_adaptor ({lut_mode} mode) on All Datasets")
     print(f"  Metric: screen (OLED) display power saving")
     print(f"{'='*80}")
     header = (
@@ -489,30 +499,24 @@ def run_benchmark(
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Benchmark Gradual Chromatic Adaptation (GCA) + GUD on "
+        description="Benchmark screen_adaptor LUT color transform on "
                     "screen_adaptor datasets, measuring screen display power"
     )
     parser.add_argument("--max-images", type=int, default=10,
                         help="Max images per dataset (default: 10)")
     parser.add_argument("--output-dir", type=str,
-                        default="gradual_adaptation_benchmark_results",
+                        default="screen_adaptor_benchmark_results",
                         help="Output directory for results")
     parser.add_argument("--max-metam-side", type=int, default=768,
                         help="Max image side (px) used for MetaM computation "
                              "(default: 768)")
-    parser.add_argument("--time", type=float, default=T_MAX,
-                        help=f"Elapsed time (s) of the gradual shift "
-                             f"(default: {T_MAX})")
-    parser.add_argument("--trajectory", type=str, default=DEFAULT_TRAJECTORY,
-                        choices=["daylight", "1.47", "1.863", "2.256"],
-                        help=f"Illuminant trajectory (default: {DEFAULT_TRAJECTORY})")
-    parser.add_argument("--velocity", type=float, default=DEFAULT_VELOCITY,
-                        help=f"u'v' per second advance speed "
-                             f"(default: {DEFAULT_VELOCITY}, adaptation-bounded)")
-    parser.add_argument("--no-gud", action="store_true",
-                        help="Disable gradual uniform dimming")
-    parser.add_argument("--gud-target", type=float, default=GUD_TARGET,
-                        help=f"Final uniform dim factor (default: {GUD_TARGET})")
+    parser.add_argument("--lut-mode", type=str, default="cluster",
+                        choices=["single", "cluster"],
+                        help="single=base LUT; cluster=scene-matched per-cluster LUTs")
+    parser.add_argument("--foveated", type=float, default=1.0,
+                        help="Foveated modulation strength [0, 1] (default: 1.0)")
+    parser.add_argument("--temporal", type=float, default=0.0,
+                        help="Temporal smoothing strength [0, 1] (default: 0.0)")
     args = parser.parse_args()
 
     output_dir = Path(args.output_dir)
@@ -520,11 +524,9 @@ def main():
         max_images=args.max_images,
         output_dir=output_dir,
         max_metam_side=args.max_metam_side,
-        time_s=args.time,
-        trajectory=args.trajectory,
-        velocity=args.velocity,
-        gud_enabled=not args.no_gud,
-        gud_target=args.gud_target,
+        lut_mode=args.lut_mode,
+        foveated=args.foveated,
+        temporal=args.temporal,
     )
 
 

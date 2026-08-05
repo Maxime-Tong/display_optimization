@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Union
+from typing import Optional, Union
 
 import numpy as np
 import torch
@@ -60,7 +60,14 @@ def load_model(checkpoint_path: Union[str, Path]) -> EllipsoidRadiusNet:
 
 
 class LUTColorTransformer:
-    def __init__(self, lut: torch.Tensor, foveated: float = 0, temporal: float = 0) -> None:
+    def __init__(
+        self,
+        lut: torch.Tensor,
+        foveated: float = 0,
+        temporal: float = 0,
+        foveal_fraction: Optional[float] = None,
+        transition_width: Optional[float] = None,
+    ) -> None:
         if lut.ndim != 4 or lut.shape[-1] != 3:
             raise ValueError("lut must have shape [R, G, B, 3]")
         self.lut = lut.float().contiguous()
@@ -72,6 +79,10 @@ class LUTColorTransformer:
 
         self.foveated = foveated
         self.temporal = temporal
+        # Foveated mask shape knobs (None → generate_phi_map defaults,
+        # i.e. sigmoid ramp mapped into [0.8, 1.2]).
+        self.foveal_fraction = foveal_fraction
+        self.transition_width = transition_width
         self.phi_map = None
 
     def transform(self, rgb: torch.Tensor) -> torch.Tensor:
@@ -82,19 +93,49 @@ class LUTColorTransformer:
     def apply_forveated(self, rgb: torch.Tensor, rgb_opt: torch.Tensor) -> torch.Tensor:
         if self.foveated <= 0:
             return rgb_opt
-        
-        downsample_gray = rgb[::4, ::4, :].mean(axis=-1)
-        std = downsample_gray.std()
-        if std < 0.2:
-            return rgb_opt
-        
-        if self.phi_map is None or self.phi_map.shape[0] != rgb.shape[0] or self.phi_map.shape[1] != rgb.shape[1]:
-            phi_map = torch.from_numpy(generate_phi_map(rgb.shape)).to(rgb.device)
-            phi_map = phi_map.unsqueeze(-1).expand(-1, -1, 3)
-            self.phi_map = phi_map * self.foveated
 
-        return rgb + self.phi_map * (rgb_opt - rgb)
-        
+        # Build (or reuse) the foveated blend mask once per resolution.
+        #   phi = 0  →  keep original pixels   (foveal plateau, nothing reaches the gaze center)
+        #   phi = 1  →  full LUT optimization  (periphery / maximum power saving)
+        if self.phi_map is None or self.phi_map.shape[0] != rgb.shape[0] or self.phi_map.shape[1] != rgb.shape[1]:
+            phi_map = torch.from_numpy(
+                generate_phi_map(rgb.shape, foveal_fraction=self.foveal_fraction, transition_width=self.transition_width)
+            ).to(device=rgb.device, dtype=rgb.dtype)
+            phi_map = phi_map.unsqueeze(-1).expand(-1, -1, 3)
+            self.phi_map = phi_map
+
+        # 1) Content-adaptive modulation.  Instead of hard-switching to the full
+        #    LUT result on uniform / white screens (the old ``std < 0.2`` short
+        #    circuit), weigh the whole mask by a lightweight contrast measure on
+        #    the already downsampled gray image:
+        #      * textured scenes (std ≳ 0.1) → edge_strength = 1 (full foveated saving)
+        #      * flat / white screens (std → 0) → edge_strength = 0.75 (gentle
+        #        roll-off; the whole frame is still optimized because phi_map now
+        #        spans [0.8, 1.2] and no hard foveal plateau exists).
+        downsample_gray = rgb[::4, ::4, :].mean(axis=-1)
+        edge_strength = torch.clamp(downsample_gray.std() / 0.1, 0.75, 1.0)
+
+        # 2) Optional spatial smoothing of the mask (single cheap 3×3 box blur on
+        #    the tiny downsampled mask) so the fovea/periphery boundary is even
+        #    softer.  Enabled by ``temporal > 0`` for backward compatibility —
+        #    zero cost when disabled.
+        mask = self.phi_map if self.temporal <= 0 else self._smooth_mask(self.phi_map)
+
+        return rgb + (mask * edge_strength * self.foveated) * (rgb_opt - rgb)
+
+    @staticmethod
+    def _smooth_mask(phi_map: torch.Tensor) -> torch.Tensor:
+        """Lightweight separable box blur on the single-channel part of phi_map."""
+        # phi_map is [h, w, 3] (replicated).  Work on [1, h, w, 1] to avoid
+        # blurring the replicated channels (they are identical, result identical).
+        kernel = torch.tensor([1.0, 1.0, 1.0], dtype=phi_map.dtype, device=phi_map.device)
+        v = phi_map[..., :1]
+        v_pad = F.pad(v.permute(2, 0, 1).unsqueeze(0), (1, 1, 1, 1), mode="replicate")
+        # horizontal
+        v_h = F.conv2d(v_pad, kernel.view(1, 1, 1, 3) / 3.0, padding=0)
+        # vertical
+        v_v = F.conv2d(v_h, kernel.view(1, 1, 3, 1) / 3.0, padding=0)
+        return v_v.squeeze(0).permute(1, 2, 0).expand(-1, -1, 3)
         
     def transform_blockwise(self, rgb: torch.Tensor, block_size: int = 4) -> torch.Tensor:
         h, w = rgb.shape[:2]
@@ -108,7 +149,9 @@ class LUTColorTransformer:
 
         block_avg_flat = block_avg.reshape(-1, 3)
         block_out_flat = self.interpolator(block_avg_flat.cpu().numpy())
-        block_out = torch.from_numpy(block_out_flat).to(rgb.device).reshape(blocks_h, blocks_w, 3)
+        # RegularGridInterpolator returns float64; cast back to the input dtype
+        # so downstream blends (foveated) and metric computations stay in float32.
+        block_out = torch.from_numpy(block_out_flat).to(device=rgb.device, dtype=rgb.dtype).reshape(blocks_h, blocks_w, 3)
 
         block_out_upsampled = block_out.repeat_interleave(block_size, dim=0).repeat_interleave(block_size, dim=1)[:h, :w, :]
         block_avg_upsampled = block_avg.repeat_interleave(block_size, dim=0).repeat_interleave(block_size, dim=1)[:h, :w, :]

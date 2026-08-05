@@ -1,0 +1,1064 @@
+{
+  "config": {
+    "method": "screen_adaptor: EllipsoidRadiusNet-derived 3D LUT color transform; cluster mode dynamically switches LUTs via DKL scene matching",
+    "lut_mode": "cluster",
+    "n_luts": 8,
+    "foveated": 1.0,
+    "temporal": 0.0,
+    "scene_matching": true,
+    "base_lut": "D:\\workspace\\master\\3DGS\\Vulkan\\display_project\\screen_adaptor\\outputs\\base_lut.pt",
+    "scene_manifest": "D:\\workspace\\master\\3DGS\\Vulkan\\display_project\\screen_adaptor\\outputs\\scene_manifest.json",
+    "benchmark_metric": "screen (OLED) display power: saving = 1 - power(opt)/power(orig), power = sum(R*0.229 + G*0.243 + B*0.526)",
+    "power_weights_rgb": [
+      0.229,
+      0.243,
+      0.526
+    ],
+    "max_metam_side": 768,
+    "max_images_per_dataset": 10
+  },
+  "per_dataset": {
+    "cf": {
+      "summary": {
+        "dataset": "cf",
+        "total_images": 10,
+        "avg_saving_percent": 10.245529976353536,
+        "avg_psnr": 28.083507528212017,
+        "avg_ssim": 0.9848724961280823,
+        "avg_metametric": 1.4076206298341276e-05
+      },
+      "per_image": [
+        {
+          "filename": "000001.png",
+          "saving": 0.1024570265662218,
+          "psnr": 28.081672407488753,
+          "ssim": 0.9847064018249512,
+          "metametric": 1.4143783118925057e-05,
+          "lut_index": 1,
+          "time_sec": 0.499,
+          "matched_prototype": "cluster_1",
+          "match_distance": 0.6532
+        },
+        {
+          "filename": "000002.png",
+          "saving": 0.10246824422915302,
+          "psnr": 28.082914394471032,
+          "ssim": 0.9847059845924377,
+          "metametric": 1.414090638718335e-05,
+          "lut_index": 1,
+          "time_sec": 0.309,
+          "matched_prototype": "cluster_1",
+          "match_distance": 0.656
+        },
+        {
+          "filename": "000003.png",
+          "saving": 0.10247046811838567,
+          "psnr": 28.083013901712913,
+          "ssim": 0.984704315662384,
+          "metametric": 1.414148664480308e-05,
+          "lut_index": 1,
+          "time_sec": 0.296,
+          "matched_prototype": "cluster_1",
+          "match_distance": 0.6562
+        },
+        {
+          "filename": "000004.png",
+          "saving": 0.10247481001692504,
+          "psnr": 28.083351316543048,
+          "ssim": 0.9847027659416199,
+          "metametric": 1.4140037819743156e-05,
+          "lut_index": 1,
+          "time_sec": 0.31,
+          "matched_prototype": "cluster_1",
+          "match_distance": 0.6562
+        },
+        {
+          "filename": "000005.png",
+          "saving": 0.10248135755734622,
+          "psnr": 28.083644718599494,
+          "ssim": 0.9847002625465393,
+          "metametric": 1.4142113286652602e-05,
+          "lut_index": 1,
+          "time_sec": 0.313,
+          "matched_prototype": "cluster_1",
+          "match_distance": 0.6567
+        },
+        {
+          "filename": "000006.png",
+          "saving": 0.10248553808274385,
+          "psnr": 28.084162206487665,
+          "ssim": 0.9846994876861572,
+          "metametric": 1.4138865481072571e-05,
+          "lut_index": 1,
+          "time_sec": 0.292,
+          "matched_prototype": "cluster_1",
+          "match_distance": 0.6552
+        },
+        {
+          "filename": "000007.png",
+          "saving": 0.10248638777578356,
+          "psnr": 28.084454717893554,
+          "ssim": 0.9846997261047363,
+          "metametric": 1.4138552614895161e-05,
+          "lut_index": 1,
+          "time_sec": 0.309,
+          "matched_prototype": "cluster_1",
+          "match_distance": 0.6542
+        },
+        {
+          "filename": "000008.png",
+          "saving": 0.1024872293966832,
+          "psnr": 28.084567939533077,
+          "ssim": 0.9847011566162109,
+          "metametric": 1.4135431229078677e-05,
+          "lut_index": 1,
+          "time_sec": 0.281,
+          "matched_prototype": "cluster_1",
+          "match_distance": 0.6537
+        },
+        {
+          "filename": "000009.png",
+          "saving": 0.10182932538483491,
+          "psnr": 28.068050885575456,
+          "ssim": 0.9856113791465759,
+          "metametric": 1.3838525774190202e-05,
+          "lut_index": 1,
+          "time_sec": 0.276,
+          "matched_prototype": "cluster_1",
+          "match_distance": 0.4276
+        },
+        {
+          "filename": "000010.png",
+          "saving": 0.10291261050727629,
+          "psnr": 28.099242793815186,
+          "ssim": 0.9854934811592102,
+          "metametric": 1.3802360626868904e-05,
+          "lut_index": 1,
+          "time_sec": 0.275,
+          "matched_prototype": "cluster_1",
+          "match_distance": 0.3397
+        }
+      ]
+    },
+    "delta_force": {
+      "summary": {
+        "dataset": "delta_force",
+        "total_images": 10,
+        "avg_saving_percent": 10.851742229497422,
+        "avg_psnr": 29.55431303417784,
+        "avg_ssim": 0.9874655365943908,
+        "avg_metametric": 1.3392157325142761e-05
+      },
+      "per_image": [
+        {
+          "filename": "000001.png",
+          "saving": 0.1084243480529925,
+          "psnr": 29.55050908057285,
+          "ssim": 0.9875015616416931,
+          "metametric": 1.3390775166044477e-05,
+          "lut_index": 0,
+          "time_sec": 0.263,
+          "matched_prototype": "cluster_0",
+          "match_distance": 0.4097
+        },
+        {
+          "filename": "000002.png",
+          "saving": 0.10840539877702504,
+          "psnr": 29.553041519824987,
+          "ssim": 0.9875450134277344,
+          "metametric": 1.3409012353804428e-05,
+          "lut_index": 0,
+          "time_sec": 0.214,
+          "matched_prototype": "cluster_0",
+          "match_distance": 0.4052
+        },
+        {
+          "filename": "000003.png",
+          "saving": 0.10863600018446906,
+          "psnr": 29.561529557301597,
+          "ssim": 0.9874460101127625,
+          "metametric": 1.3392694199865218e-05,
+          "lut_index": 0,
+          "time_sec": 0.219,
+          "matched_prototype": "cluster_0",
+          "match_distance": 0.3928
+        },
+        {
+          "filename": "000004.png",
+          "saving": 0.10868108642472463,
+          "psnr": 29.562185114400986,
+          "ssim": 0.987421989440918,
+          "metametric": 1.3378802577790339e-05,
+          "lut_index": 0,
+          "time_sec": 0.217,
+          "matched_prototype": "cluster_0",
+          "match_distance": 0.3915
+        },
+        {
+          "filename": "000005.png",
+          "saving": 0.10861768724872467,
+          "psnr": 29.558350252713552,
+          "ssim": 0.9874239563941956,
+          "metametric": 1.339451137027936e-05,
+          "lut_index": 0,
+          "time_sec": 0.235,
+          "matched_prototype": "cluster_0",
+          "match_distance": 0.397
+        },
+        {
+          "filename": "000006.png",
+          "saving": 0.10856139859877378,
+          "psnr": 29.555710728194484,
+          "ssim": 0.9874491691589355,
+          "metametric": 1.339259779342683e-05,
+          "lut_index": 0,
+          "time_sec": 0.229,
+          "matched_prototype": "cluster_0",
+          "match_distance": 0.4022
+        },
+        {
+          "filename": "000007.png",
+          "saving": 0.10849003421361125,
+          "psnr": 29.550845199070398,
+          "ssim": 0.9874637722969055,
+          "metametric": 1.339949722023448e-05,
+          "lut_index": 0,
+          "time_sec": 0.22,
+          "matched_prototype": "cluster_0",
+          "match_distance": 0.411
+        },
+        {
+          "filename": "000008.png",
+          "saving": 0.10847864367163396,
+          "psnr": 29.550964755623447,
+          "ssim": 0.9874659180641174,
+          "metametric": 1.3394884263107087e-05,
+          "lut_index": 0,
+          "time_sec": 0.216,
+          "matched_prototype": "cluster_0",
+          "match_distance": 0.4098
+        },
+        {
+          "filename": "000009.png",
+          "saving": 0.10848268140194195,
+          "psnr": 29.551443318012893,
+          "ssim": 0.9874565601348877,
+          "metametric": 1.3385662896325812e-05,
+          "lut_index": 0,
+          "time_sec": 0.235,
+          "matched_prototype": "cluster_0",
+          "match_distance": 0.4067
+        },
+        {
+          "filename": "000010.png",
+          "saving": 0.10839694437584535,
+          "psnr": 29.548550816063184,
+          "ssim": 0.987481415271759,
+          "metametric": 1.3383135410549585e-05,
+          "lut_index": 0,
+          "time_sec": 0.231,
+          "matched_prototype": "cluster_0",
+          "match_distance": 0.4123
+        }
+      ]
+    },
+    "dfm300": {
+      "summary": {
+        "dataset": "dfm300",
+        "total_images": 10,
+        "avg_saving_percent": 10.101442753017938,
+        "avg_psnr": 27.155375451868473,
+        "avg_ssim": 0.9868202030658721,
+        "avg_metametric": 1.5009072467364603e-05
+      },
+      "per_image": [
+        {
+          "filename": "000001.png",
+          "saving": 0.10102153817998338,
+          "psnr": 27.154572339348647,
+          "ssim": 0.9868131279945374,
+          "metametric": 1.5011491086625028e-05,
+          "lut_index": 5,
+          "time_sec": 0.307,
+          "matched_prototype": "cluster_5",
+          "match_distance": 0.4237
+        },
+        {
+          "filename": "000002.png",
+          "saving": 0.10101647405433445,
+          "psnr": 27.154439247969577,
+          "ssim": 0.9868221879005432,
+          "metametric": 1.5009738490334712e-05,
+          "lut_index": 5,
+          "time_sec": 0.229,
+          "matched_prototype": "cluster_5",
+          "match_distance": 0.4232
+        },
+        {
+          "filename": "000003.png",
+          "saving": 0.10103358436532817,
+          "psnr": 27.155709595568865,
+          "ssim": 0.9868006706237793,
+          "metametric": 1.5011551113275345e-05,
+          "lut_index": 5,
+          "time_sec": 0.225,
+          "matched_prototype": "cluster_5",
+          "match_distance": 0.4265
+        },
+        {
+          "filename": "000004.png",
+          "saving": 0.10102786417320464,
+          "psnr": 27.155456721903217,
+          "ssim": 0.9867997169494629,
+          "metametric": 1.500965026934864e-05,
+          "lut_index": 5,
+          "time_sec": 0.22,
+          "matched_prototype": "cluster_5",
+          "match_distance": 0.4254
+        },
+        {
+          "filename": "000005.png",
+          "saving": 0.10101780580967135,
+          "psnr": 27.15558741117258,
+          "ssim": 0.9868206977844238,
+          "metametric": 1.5007281945145223e-05,
+          "lut_index": 5,
+          "time_sec": 0.237,
+          "matched_prototype": "cluster_5",
+          "match_distance": 0.424
+        },
+        {
+          "filename": "000006.png",
+          "saving": 0.10101201362252721,
+          "psnr": 27.155424138064586,
+          "ssim": 0.9868211150169373,
+          "metametric": 1.5005108252807986e-05,
+          "lut_index": 5,
+          "time_sec": 0.222,
+          "matched_prototype": "cluster_5",
+          "match_distance": 0.4238
+        },
+        {
+          "filename": "000007.png",
+          "saving": 0.10100474846341223,
+          "psnr": 27.1553663883085,
+          "ssim": 0.9868311882019043,
+          "metametric": 1.5013200936664362e-05,
+          "lut_index": 5,
+          "time_sec": 0.213,
+          "matched_prototype": "cluster_5",
+          "match_distance": 0.4249
+        },
+        {
+          "filename": "000008.png",
+          "saving": 0.10100548961833411,
+          "psnr": 27.155536474432257,
+          "ssim": 0.9868292808532715,
+          "metametric": 1.5010852621344384e-05,
+          "lut_index": 5,
+          "time_sec": 0.21,
+          "matched_prototype": "cluster_5",
+          "match_distance": 0.4256
+        },
+        {
+          "filename": "000009.png",
+          "saving": 0.1010047584071142,
+          "psnr": 27.15577254438403,
+          "ssim": 0.9868311285972595,
+          "metametric": 1.500633607065538e-05,
+          "lut_index": 5,
+          "time_sec": 0.223,
+          "matched_prototype": "cluster_5",
+          "match_distance": 0.4242
+        },
+        {
+          "filename": "000010.png",
+          "saving": 0.10099999860788389,
+          "psnr": 27.155889657532462,
+          "ssim": 0.9868329167366028,
+          "metametric": 1.5005513887444977e-05,
+          "lut_index": 5,
+          "time_sec": 0.239,
+          "matched_prototype": "cluster_5",
+          "match_distance": 0.4233
+        }
+      ]
+    },
+    "genshin_impact": {
+      "summary": {
+        "dataset": "genshin_impact",
+        "total_images": 10,
+        "avg_saving_percent": 10.833852732951463,
+        "avg_psnr": 26.788282750740855,
+        "avg_ssim": 0.9819785594940186,
+        "avg_metametric": 1.6753784075262955e-05
+      },
+      "per_image": [
+        {
+          "filename": "000001.png",
+          "saving": 0.10869486887079072,
+          "psnr": 26.77794482419573,
+          "ssim": 0.981813907623291,
+          "metametric": 1.647469798626844e-05,
+          "lut_index": 3,
+          "time_sec": 0.203,
+          "matched_prototype": "cluster_3",
+          "match_distance": 0.332
+        },
+        {
+          "filename": "000002.png",
+          "saving": 0.10865054617126912,
+          "psnr": 26.770268185909813,
+          "ssim": 0.9818513989448547,
+          "metametric": 1.6541091099497862e-05,
+          "lut_index": 3,
+          "time_sec": 0.156,
+          "matched_prototype": "cluster_3",
+          "match_distance": 0.3067
+        },
+        {
+          "filename": "000003.png",
+          "saving": 0.10826191261215135,
+          "psnr": 26.783227156392975,
+          "ssim": 0.9818456768989563,
+          "metametric": 1.681082540017087e-05,
+          "lut_index": 3,
+          "time_sec": 0.146,
+          "matched_prototype": "cluster_3",
+          "match_distance": 0.1441
+        },
+        {
+          "filename": "000004.png",
+          "saving": 0.1078829673746382,
+          "psnr": 26.82447804552489,
+          "ssim": 0.9826663136482239,
+          "metametric": 1.693017838988453e-05,
+          "lut_index": 3,
+          "time_sec": 0.146,
+          "matched_prototype": "cluster_3",
+          "match_distance": 0.2674
+        },
+        {
+          "filename": "000005.png",
+          "saving": 0.10807194142010157,
+          "psnr": 26.793237882751022,
+          "ssim": 0.9819858074188232,
+          "metametric": 1.6973695892374963e-05,
+          "lut_index": 3,
+          "time_sec": 0.16,
+          "matched_prototype": "cluster_3",
+          "match_distance": 0.2218
+        },
+        {
+          "filename": "000006.png",
+          "saving": 0.10852039543980463,
+          "psnr": 26.800047158015808,
+          "ssim": 0.9817892909049988,
+          "metametric": 1.6880097973626107e-05,
+          "lut_index": 3,
+          "time_sec": 0.159,
+          "matched_prototype": "cluster_3",
+          "match_distance": 0.2676
+        },
+        {
+          "filename": "000007.png",
+          "saving": 0.10837312397828158,
+          "psnr": 26.791346685143687,
+          "ssim": 0.9819768071174622,
+          "metametric": 1.6864893041201867e-05,
+          "lut_index": 3,
+          "time_sec": 0.158,
+          "matched_prototype": "cluster_3",
+          "match_distance": 0.2596
+        },
+        {
+          "filename": "000008.png",
+          "saving": 0.10828202800427777,
+          "psnr": 26.770163059366364,
+          "ssim": 0.9819164872169495,
+          "metametric": 1.681091271166224e-05,
+          "lut_index": 3,
+          "time_sec": 0.159,
+          "matched_prototype": "cluster_3",
+          "match_distance": 0.2859
+        },
+        {
+          "filename": "000009.png",
+          "saving": 0.10832163903417591,
+          "psnr": 26.78263203688828,
+          "ssim": 0.9818612933158875,
+          "metametric": 1.6635873180348426e-05,
+          "lut_index": 3,
+          "time_sec": 0.146,
+          "matched_prototype": "cluster_3",
+          "match_distance": 0.3347
+        },
+        {
+          "filename": "000010.png",
+          "saving": 0.10832585038965559,
+          "psnr": 26.789482473219973,
+          "ssim": 0.9820786118507385,
+          "metametric": 1.6615575077594258e-05,
+          "lut_index": 3,
+          "time_sec": 0.155,
+          "matched_prototype": "cluster_3",
+          "match_distance": 0.3485
+        }
+      ]
+    },
+    "jkchess": {
+      "summary": {
+        "dataset": "jkchess",
+        "total_images": 10,
+        "avg_saving_percent": 9.666864687862509,
+        "avg_psnr": 30.408539697471593,
+        "avg_ssim": 0.9900863111019135,
+        "avg_metametric": 1.1921075656573522e-05
+      },
+      "per_image": [
+        {
+          "filename": "000001.png",
+          "saving": 0.09671035568995046,
+          "psnr": 30.411340443167106,
+          "ssim": 0.990077018737793,
+          "metametric": 1.1918827112822328e-05,
+          "lut_index": 4,
+          "time_sec": 0.493,
+          "matched_prototype": "cluster_4",
+          "match_distance": 0.1459
+        },
+        {
+          "filename": "000002.png",
+          "saving": 0.0966552434348289,
+          "psnr": 30.408566907954597,
+          "ssim": 0.9900849461555481,
+          "metametric": 1.1921303666895255e-05,
+          "lut_index": 4,
+          "time_sec": 0.287,
+          "matched_prototype": "cluster_4",
+          "match_distance": 0.1479
+        },
+        {
+          "filename": "000003.png",
+          "saving": 0.09665929027194609,
+          "psnr": 30.40825861589393,
+          "ssim": 0.9900851249694824,
+          "metametric": 1.1922602425329387e-05,
+          "lut_index": 4,
+          "time_sec": 0.274,
+          "matched_prototype": "cluster_4",
+          "match_distance": 0.148
+        },
+        {
+          "filename": "000004.png",
+          "saving": 0.09666073459912727,
+          "psnr": 30.408352157318674,
+          "ssim": 0.9900868535041809,
+          "metametric": 1.1922106750716921e-05,
+          "lut_index": 4,
+          "time_sec": 0.266,
+          "matched_prototype": "cluster_4",
+          "match_distance": 0.148
+        },
+        {
+          "filename": "000005.png",
+          "saving": 0.09666059445703046,
+          "psnr": 30.408170953522145,
+          "ssim": 0.9900870323181152,
+          "metametric": 1.1921376426471397e-05,
+          "lut_index": 4,
+          "time_sec": 0.26,
+          "matched_prototype": "cluster_4",
+          "match_distance": 0.1482
+        },
+        {
+          "filename": "000006.png",
+          "saving": 0.09666364941364458,
+          "psnr": 30.40817744367387,
+          "ssim": 0.9900882840156555,
+          "metametric": 1.1922883459192235e-05,
+          "lut_index": 4,
+          "time_sec": 0.266,
+          "matched_prototype": "cluster_4",
+          "match_distance": 0.1482
+        },
+        {
+          "filename": "000007.png",
+          "saving": 0.09666564735380645,
+          "psnr": 30.408135375712845,
+          "ssim": 0.990088939666748,
+          "metametric": 1.1919616554223467e-05,
+          "lut_index": 4,
+          "time_sec": 0.276,
+          "matched_prototype": "cluster_4",
+          "match_distance": 0.148
+        },
+        {
+          "filename": "000008.png",
+          "saving": 0.09666643969888167,
+          "psnr": 30.408104189470528,
+          "ssim": 0.9900885224342346,
+          "metametric": 1.192096260638209e-05,
+          "lut_index": 4,
+          "time_sec": 0.292,
+          "matched_prototype": "cluster_4",
+          "match_distance": 0.1478
+        },
+        {
+          "filename": "000009.png",
+          "saving": 0.09667163245343913,
+          "psnr": 30.408135641420575,
+          "ssim": 0.990088164806366,
+          "metametric": 1.1920626093342435e-05,
+          "lut_index": 4,
+          "time_sec": 0.26,
+          "matched_prototype": "cluster_4",
+          "match_distance": 0.1474
+        },
+        {
+          "filename": "000010.png",
+          "saving": 0.09667288141359587,
+          "psnr": 30.408155246581664,
+          "ssim": 0.9900882244110107,
+          "metametric": 1.1920451470359694e-05,
+          "lut_index": 4,
+          "time_sec": 0.261,
+          "matched_prototype": "cluster_4",
+          "match_distance": 0.147
+        }
+      ]
+    },
+    "miHoYo": {
+      "summary": {
+        "dataset": "miHoYo",
+        "total_images": 10,
+        "avg_saving_percent": 8.87434993080256,
+        "avg_psnr": 26.329304568355024,
+        "avg_ssim": 0.9949232459068298,
+        "avg_metametric": 1.8353528139414267e-05
+      },
+      "per_image": [
+        {
+          "filename": "000001.png",
+          "saving": 0.0887219100401101,
+          "psnr": 26.329691022240368,
+          "ssim": 0.9949210286140442,
+          "metametric": 1.8361690308665857e-05,
+          "lut_index": 7,
+          "time_sec": 0.354,
+          "matched_prototype": "cluster_7",
+          "match_distance": 0.8931
+        },
+        {
+          "filename": "000002.png",
+          "saving": 0.0887274955522026,
+          "psnr": 26.329253830433913,
+          "ssim": 0.9949178099632263,
+          "metametric": 1.8357282897341065e-05,
+          "lut_index": 7,
+          "time_sec": 0.258,
+          "matched_prototype": "cluster_7",
+          "match_distance": 0.8933
+        },
+        {
+          "filename": "000003.png",
+          "saving": 0.08872272781544865,
+          "psnr": 26.3288392749128,
+          "ssim": 0.994938313961029,
+          "metametric": 1.836774572439026e-05,
+          "lut_index": 7,
+          "time_sec": 0.282,
+          "matched_prototype": "cluster_7",
+          "match_distance": 0.8928
+        },
+        {
+          "filename": "000004.png",
+          "saving": 0.08873341939375523,
+          "psnr": 26.32944392396045,
+          "ssim": 0.994929850101471,
+          "metametric": 1.8352995539316908e-05,
+          "lut_index": 7,
+          "time_sec": 0.266,
+          "matched_prototype": "cluster_7",
+          "match_distance": 0.8936
+        },
+        {
+          "filename": "000005.png",
+          "saving": 0.08873751977423094,
+          "psnr": 26.3294038079757,
+          "ssim": 0.99493408203125,
+          "metametric": 1.8347453078604303e-05,
+          "lut_index": 7,
+          "time_sec": 0.252,
+          "matched_prototype": "cluster_7",
+          "match_distance": 0.8943
+        },
+        {
+          "filename": "000006.png",
+          "saving": 0.08874935485786206,
+          "psnr": 26.329111044178358,
+          "ssim": 0.9949154853820801,
+          "metametric": 1.835558759921696e-05,
+          "lut_index": 7,
+          "time_sec": 0.267,
+          "matched_prototype": "cluster_7",
+          "match_distance": 0.8928
+        },
+        {
+          "filename": "000007.png",
+          "saving": 0.08875090349216708,
+          "psnr": 26.32904956301782,
+          "ssim": 0.9949193596839905,
+          "metametric": 1.8355340216658078e-05,
+          "lut_index": 7,
+          "time_sec": 0.252,
+          "matched_prototype": "cluster_7",
+          "match_distance": 0.8924
+        },
+        {
+          "filename": "000008.png",
+          "saving": 0.0887572096300695,
+          "psnr": 26.32943446061514,
+          "ssim": 0.9949216842651367,
+          "metametric": 1.8342363546253182e-05,
+          "lut_index": 7,
+          "time_sec": 0.252,
+          "matched_prototype": "cluster_7",
+          "match_distance": 0.8945
+        },
+        {
+          "filename": "000009.png",
+          "saving": 0.08876249469458686,
+          "psnr": 26.329391936440988,
+          "ssim": 0.9949188828468323,
+          "metametric": 1.8344617274124175e-05,
+          "lut_index": 7,
+          "time_sec": 0.254,
+          "matched_prototype": "cluster_7",
+          "match_distance": 0.895
+        },
+        {
+          "filename": "000010.png",
+          "saving": 0.08877195782982306,
+          "psnr": 26.3294268197747,
+          "ssim": 0.9949159622192383,
+          "metametric": 1.8350205209571868e-05,
+          "lut_index": 7,
+          "time_sec": 0.261,
+          "matched_prototype": "cluster_7",
+          "match_distance": 0.8958
+        }
+      ]
+    },
+    "nrc": {
+      "summary": {
+        "dataset": "nrc",
+        "total_images": 10,
+        "avg_saving_percent": 10.286245463351133,
+        "avg_psnr": 25.864424915339633,
+        "avg_ssim": 0.9828415751457215,
+        "avg_metametric": 1.8815689145412762e-05
+      },
+      "per_image": [
+        {
+          "filename": "000001.png",
+          "saving": 0.1028487575239091,
+          "psnr": 25.86273874390869,
+          "ssim": 0.9828439354896545,
+          "metametric": 1.8820312106981874e-05,
+          "lut_index": 7,
+          "time_sec": 0.383,
+          "matched_prototype": "cluster_7",
+          "match_distance": 1.3491
+        },
+        {
+          "filename": "000002.png",
+          "saving": 0.10285079777148431,
+          "psnr": 25.862321984818198,
+          "ssim": 0.9828452467918396,
+          "metametric": 1.8818660464603454e-05,
+          "lut_index": 7,
+          "time_sec": 0.268,
+          "matched_prototype": "cluster_7",
+          "match_distance": 1.3488
+        },
+        {
+          "filename": "000003.png",
+          "saving": 0.10285795204184822,
+          "psnr": 25.862187895116342,
+          "ssim": 0.982844352722168,
+          "metametric": 1.8822027413989417e-05,
+          "lut_index": 7,
+          "time_sec": 0.266,
+          "matched_prototype": "cluster_7",
+          "match_distance": 1.3528
+        },
+        {
+          "filename": "000004.png",
+          "saving": 0.10285501987073109,
+          "psnr": 25.861753741512473,
+          "ssim": 0.9828473925590515,
+          "metametric": 1.8821692719939165e-05,
+          "lut_index": 7,
+          "time_sec": 0.258,
+          "matched_prototype": "cluster_7",
+          "match_distance": 1.354
+        },
+        {
+          "filename": "000005.png",
+          "saving": 0.10285805659925373,
+          "psnr": 25.86365016851922,
+          "ssim": 0.9828445315361023,
+          "metametric": 1.881917160062585e-05,
+          "lut_index": 7,
+          "time_sec": 0.282,
+          "matched_prototype": "cluster_7",
+          "match_distance": 1.3535
+        },
+        {
+          "filename": "000006.png",
+          "saving": 0.10286217286678456,
+          "psnr": 25.864793274589324,
+          "ssim": 0.9828438758850098,
+          "metametric": 1.8813068891176954e-05,
+          "lut_index": 7,
+          "time_sec": 0.255,
+          "matched_prototype": "cluster_7",
+          "match_distance": 1.3503
+        },
+        {
+          "filename": "000007.png",
+          "saving": 0.10286466942741601,
+          "psnr": 25.865752166193822,
+          "ssim": 0.9828446507453918,
+          "metametric": 1.8812375856214203e-05,
+          "lut_index": 7,
+          "time_sec": 0.264,
+          "matched_prototype": "cluster_7",
+          "match_distance": 1.3526
+        },
+        {
+          "filename": "000008.png",
+          "saving": 0.10287066812043222,
+          "psnr": 25.86664774866889,
+          "ssim": 0.9828421473503113,
+          "metametric": 1.8809038010658696e-05,
+          "lut_index": 7,
+          "time_sec": 0.258,
+          "matched_prototype": "cluster_7",
+          "match_distance": 1.3532
+        },
+        {
+          "filename": "000009.png",
+          "saving": 0.10287714762045752,
+          "psnr": 25.86739983942117,
+          "ssim": 0.9828312993049622,
+          "metametric": 1.881122079794295e-05,
+          "lut_index": 7,
+          "time_sec": 0.252,
+          "matched_prototype": "cluster_7",
+          "match_distance": 1.3536
+        },
+        {
+          "filename": "000010.png",
+          "saving": 0.1028793044927967,
+          "psnr": 25.867003590648224,
+          "ssim": 0.9828283190727234,
+          "metametric": 1.8809323591995053e-05,
+          "lut_index": 7,
+          "time_sec": 0.261,
+          "matched_prototype": "cluster_7",
+          "match_distance": 1.3515
+        }
+      ]
+    },
+    "sgame0": {
+      "summary": {
+        "dataset": "sgame0",
+        "total_images": 10,
+        "avg_saving_percent": 10.80611343771032,
+        "avg_psnr": 29.362125233286626,
+        "avg_ssim": 0.9857420086860657,
+        "avg_metametric": 1.3225761631474597e-05
+      },
+      "per_image": [
+        {
+          "filename": "000001.png",
+          "saving": 0.10827058861498773,
+          "psnr": 29.396293557543416,
+          "ssim": 0.9857766032218933,
+          "metametric": 1.312613039772259e-05,
+          "lut_index": 0,
+          "time_sec": 0.363,
+          "matched_prototype": "cluster_0",
+          "match_distance": 0.5483
+        },
+        {
+          "filename": "000002.png",
+          "saving": 0.10798472020233518,
+          "psnr": 29.34884159208243,
+          "ssim": 0.9857404232025146,
+          "metametric": 1.3228564966993872e-05,
+          "lut_index": 0,
+          "time_sec": 0.279,
+          "matched_prototype": "cluster_0",
+          "match_distance": 0.6203
+        },
+        {
+          "filename": "000003.png",
+          "saving": 0.1080062196337046,
+          "psnr": 29.351806548724625,
+          "ssim": 0.9857431054115295,
+          "metametric": 1.3212380508775823e-05,
+          "lut_index": 0,
+          "time_sec": 0.272,
+          "matched_prototype": "cluster_0",
+          "match_distance": 0.6171
+        },
+        {
+          "filename": "000004.png",
+          "saving": 0.10803828716313302,
+          "psnr": 29.35456946048935,
+          "ssim": 0.9857142567634583,
+          "metametric": 1.3223020687291864e-05,
+          "lut_index": 0,
+          "time_sec": 0.288,
+          "matched_prototype": "cluster_0",
+          "match_distance": 0.6132
+        },
+        {
+          "filename": "000005.png",
+          "saving": 0.10804759365917616,
+          "psnr": 29.356820658188237,
+          "ssim": 0.9857190251350403,
+          "metametric": 1.3255966223368887e-05,
+          "lut_index": 0,
+          "time_sec": 0.286,
+          "matched_prototype": "cluster_0",
+          "match_distance": 0.6114
+        },
+        {
+          "filename": "000006.png",
+          "saving": 0.10805317062923225,
+          "psnr": 29.358925778038994,
+          "ssim": 0.9857273101806641,
+          "metametric": 1.3273319382278714e-05,
+          "lut_index": 0,
+          "time_sec": 0.291,
+          "matched_prototype": "cluster_0",
+          "match_distance": 0.6081
+        },
+        {
+          "filename": "000007.png",
+          "saving": 0.10805235978816219,
+          "psnr": 29.36119106743403,
+          "ssim": 0.9857363700866699,
+          "metametric": 1.3258541912364308e-05,
+          "lut_index": 0,
+          "time_sec": 0.276,
+          "matched_prototype": "cluster_0",
+          "match_distance": 0.6062
+        },
+        {
+          "filename": "000008.png",
+          "saving": 0.1080552148781474,
+          "psnr": 29.36257622181251,
+          "ssim": 0.9857376217842102,
+          "metametric": 1.3265398592920974e-05,
+          "lut_index": 0,
+          "time_sec": 0.27,
+          "matched_prototype": "cluster_0",
+          "match_distance": 0.6044
+        },
+        {
+          "filename": "000009.png",
+          "saving": 0.10805174643466198,
+          "psnr": 29.364184032320118,
+          "ssim": 0.9857549667358398,
+          "metametric": 1.3229161595518235e-05,
+          "lut_index": 0,
+          "time_sec": 0.269,
+          "matched_prototype": "cluster_0",
+          "match_distance": 0.6032
+        },
+        {
+          "filename": "000010.png",
+          "saving": 0.10805144276749123,
+          "psnr": 29.36604341623258,
+          "ssim": 0.9857704043388367,
+          "metametric": 1.3185132047510706e-05,
+          "lut_index": 0,
+          "time_sec": 0.287,
+          "matched_prototype": "cluster_0",
+          "match_distance": 0.6002
+        }
+      ]
+    }
+  },
+  "summary_table": [
+    {
+      "dataset": "cf",
+      "total_images": 10,
+      "avg_saving_percent": 10.245529976353536,
+      "avg_psnr": 28.083507528212017,
+      "avg_ssim": 0.9848724961280823,
+      "avg_metametric": 1.4076206298341276e-05
+    },
+    {
+      "dataset": "delta_force",
+      "total_images": 10,
+      "avg_saving_percent": 10.851742229497422,
+      "avg_psnr": 29.55431303417784,
+      "avg_ssim": 0.9874655365943908,
+      "avg_metametric": 1.3392157325142761e-05
+    },
+    {
+      "dataset": "dfm300",
+      "total_images": 10,
+      "avg_saving_percent": 10.101442753017938,
+      "avg_psnr": 27.155375451868473,
+      "avg_ssim": 0.9868202030658721,
+      "avg_metametric": 1.5009072467364603e-05
+    },
+    {
+      "dataset": "genshin_impact",
+      "total_images": 10,
+      "avg_saving_percent": 10.833852732951463,
+      "avg_psnr": 26.788282750740855,
+      "avg_ssim": 0.9819785594940186,
+      "avg_metametric": 1.6753784075262955e-05
+    },
+    {
+      "dataset": "jkchess",
+      "total_images": 10,
+      "avg_saving_percent": 9.666864687862509,
+      "avg_psnr": 30.408539697471593,
+      "avg_ssim": 0.9900863111019135,
+      "avg_metametric": 1.1921075656573522e-05
+    },
+    {
+      "dataset": "miHoYo",
+      "total_images": 10,
+      "avg_saving_percent": 8.87434993080256,
+      "avg_psnr": 26.329304568355024,
+      "avg_ssim": 0.9949232459068298,
+      "avg_metametric": 1.8353528139414267e-05
+    },
+    {
+      "dataset": "nrc",
+      "total_images": 10,
+      "avg_saving_percent": 10.286245463351133,
+      "avg_psnr": 25.864424915339633,
+      "avg_ssim": 0.9828415751457215,
+      "avg_metametric": 1.8815689145412762e-05
+    },
+    {
+      "dataset": "sgame0",
+      "total_images": 10,
+      "avg_saving_percent": 10.80611343771032,
+      "avg_psnr": 29.362125233286626,
+      "avg_ssim": 0.9857420086860657,
+      "avg_metametric": 1.3225761631474597e-05
+    }
+  ]
+}

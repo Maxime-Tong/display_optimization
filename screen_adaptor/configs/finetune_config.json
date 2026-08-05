@@ -4,7 +4,7 @@
     "image_size": 256,
     "batch_size": 1,
     "steps": 300,
-    "lr": 1e-4,
+    "lr": 2e-4,
     "device": "cuda",
     "hidden_dim": 32,
     "depth": 2,

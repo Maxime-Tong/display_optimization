@@ -121,27 +121,16 @@ def collect_images(directory: Path) -> List[Path]:
     return paths
 
 
-def square_crop(img: np.ndarray) -> np.ndarray:
-    """Center square crop. Mimics power_saver_demo.py / benchmark_vr_power_saver.py."""
-    h, w = img.shape[0], img.shape[1]
-    if h == w:
-        return img.copy()
-    if h > w:
-        vpad = (h - w) // 2
-        return img[vpad:vpad + w, ...].copy()
-    else:
-        hpad = (w - h) // 2
-        return img[:, hpad:hpad + h, ...].copy()
-
-
 def crop_to_tile_multiple(img: np.ndarray, tile_size: int = TILE_SIZE) -> np.ndarray:
     """
-    Center-crop image so the color optimizer 4x4 tiling works.
+    Center-crop image (MINIMAL, no square crop) so the color optimizer 4x4
+    tiling works.  This matches generate_video.py's crop behavior so the
+    benchmark and the video generation use the exact same resolution.
 
     The hvs_vr_encoding method requires both dimensions divisible by 4 AND
     H*W divisible by 48 (its internal ecc-map reshape is (-1, 4, 4, 3)).
     """
-    img = square_crop(np.asarray(img))
+    img = np.asarray(img)
     h, w = img.shape[0], img.shape[1]
 
     h = (h // tile_size) * tile_size

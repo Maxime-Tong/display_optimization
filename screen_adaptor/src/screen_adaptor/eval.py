@@ -110,8 +110,8 @@ def apply_lut_with_matcher(
     """Match scene → select LUT → apply."""
     image = Image.open(image_path).convert("RGB")
     arr = np.asarray(image, dtype=np.float32) / 255.0
-    if arr.shape[0] > arr.shape[1]:
-        arr = arr.transpose(1, 0, 2)
+    # Use the full native-resolution image (no transpose — benchmark and video
+    # generation now run at the same original resolution)
     rgb = torch.from_numpy(arr)
 
     best_index, prototype, distance = matcher.match_paths([image_path])

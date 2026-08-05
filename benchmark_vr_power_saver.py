@@ -90,19 +90,6 @@ def collect_images(directory: Path) -> List[Path]:
     return paths
 
 
-def square_crop(img: np.ndarray) -> np.ndarray:
-    """Crop image to square (center crop). Mimics power_saver_demo.py."""
-    h, w = img.shape[0], img.shape[1]
-    if h == w:
-        return img.copy()
-    if h > w:
-        vpad = (h - w) // 2
-        return img[vpad:vpad + w, ...].copy()
-    else:
-        hpad = (w - h) // 2
-        return img[:, hpad:hpad + h, ...].copy()
-
-
 # ── VR Power Saver pipeline ───────────────────────────────────────────────
 
 def apply_vr_pipeline(
@@ -121,8 +108,8 @@ def apply_vr_pipeline(
     Returns:
         optimized_srgb: float32 sRGB image in [0, 1], shape (H, W, 3)
     """
-    # Square crop (as in power_saver_demo.py)
-    inp = square_crop(img_srgb)
+    # Use the full original image (no square crop — benchmark runs at native size)
+    inp = img_srgb
 
     # Power gradient vector (negative of weights, excluding W channel)
     # vr-power-saver model was trained with 4 weights [231.5, 245.7, 530.8, 977.3]
@@ -260,16 +247,13 @@ def run_benchmark(
                 # Load image
                 img = np.asarray(Image.open(img_path).convert("RGB"), dtype=np.float32) / 255.0
 
-                # Apply VR pipeline (internally square-crops)
+                # Apply VR pipeline (uses the full native-resolution image)
                 t0 = time.perf_counter()
                 optimized = apply_vr_pipeline(img, model, POWER_WEIGHTS_RGB)
                 elapsed = time.perf_counter() - t0
 
-                # Apply same square crop to original for fair comparison
-                original_cropped = square_crop(img)
-
-                # Metrics (compare cropped versions)
-                metrics = evaluate_image(original_cropped, optimized, POWER_WEIGHTS_RGB)
+                # Metrics (compare full-size versions)
+                metrics = evaluate_image(img, optimized, POWER_WEIGHTS_RGB)
 
                 results.append({
                     "filename": img_path.name,
