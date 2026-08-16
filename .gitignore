@@ -75,3 +75,10 @@ desktop.ini
 htmlcov/
 .tox/
 .nox/
+
+# ── Generated results (regenerable outputs; keep code only) ─────────────
+result/
+*benchmark_results/
+visualization/figures/
+visualization/data/
+visualization/report.md
